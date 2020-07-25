@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Switch, Route, Link } from 'react-router-dom';
+import AddWordForm from './components/AddWordForm';
 
 class App extends React.Component {
   render() {
@@ -22,6 +23,9 @@ function Header() {
       <li>
         <Link to="/about">About</Link>
       </li>
+      <li>
+        <Link to="/add">Add Words</Link>
+      </li>
     </ul>
   )
 }
@@ -31,6 +35,7 @@ function Main() {
     <Switch>
       <Route path="/about" component={About}/>
       <Route exact path="/" component={Home}/>
+      <Route path="/add" component={AddWordForm}/>
     </Switch>
   )
 }
