@@ -6,12 +6,14 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import config from './config.json'
+const { api } = config;
+
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <body>
-        <App />
-      </body>
+      <App />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

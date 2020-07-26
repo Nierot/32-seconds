@@ -2,12 +2,36 @@ import React from 'react';
 import './App.css';
 import { Switch, Route, Link } from 'react-router-dom';
 import AddWordForm from './components/AddWordForm';
+import socketIOClient from 'socket.io-client';
+import config from './config.json';
+const { 'base-uri': BASE_URI, 'socket-io-path': SOCKET_IO } = config;
 
-class App extends React.Component {
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      socket: undefined,
+    }
+  }
+
+  async componentDidMount() {
+    await this.setState({
+      socket: socketIOClient(BASE_URI, { path: SOCKET_IO })
+    });
+    
+    this.state.socket.on('test', data => {
+      alert(data);
+    })
+
+    this.state.socket.on('error', data => {
+      console.log(`SOCKET-IO ERROR: ${data}`);
+    })
+  }
+
   render() {
     return (
         <div className="App">
-          <Header />
+          {/* <Header /> */}
           <Main />
         </div>
     );
@@ -16,25 +40,17 @@ class App extends React.Component {
 
 function Header() {
   return (
-    <ul>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/about">About</Link>
-      </li>
-      <li>
-        <Link to="/add">Add Words</Link>
-      </li>
-    </ul>
+    <nav>
+      <Link to="/">Home </Link>
+      <Link to="/add"> Add Words</Link>
+    </nav>
   )
 }
 
 function Main() {
   return (
     <Switch>
-      <Route path="/about" component={About}/>
-      <Route exact path="/" component={Home}/>
+      <Route path="/" exact component={Home}/>
       <Route path="/add" component={AddWordForm}/>
     </Switch>
   )
@@ -47,13 +63,3 @@ function Home() {
     </div>
   )
 }
-
-function About() {
-  return (
-    <div className="About">
-      <h1>About</h1>
-    </div>
-  )
-}
-
-export default App;

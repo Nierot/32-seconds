@@ -1,21 +1,29 @@
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+const app = require('express')();
+const http = require('http').createServer(app);
+const cors = require('cors');
 
-const port = 3000;
+const PORT = 8080;
+const BASE_URL = '/32-seconds/'
+const URI = `http://localhost:8080${BASE_URL}`
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+const io = require('socket.io')(http, {
+    path: BASE_URL + 'socket.io'
 });
 
-app.get('/static/*', (req, res) => {
-    res.sendFile(__dirname + req.url);
+
+app.get(BASE_URL, (req, res) => {
+    res.send("Oof");
 });
 
-io.on('connection', (socket) => {
+io.of(BASE_URL).on('connection', socket => {
     console.log('a user connected');
+
 });
 
-http.listen(port, () => {
-  console.log(`listening on http://localhost:${port}`);
+app.use(cors({
+    origin: URI
+}));
+
+http.listen(PORT, () => {
+  console.log(`listening on http://localhost:${PORT}${BASE_URL}`);
 });
