@@ -10,9 +10,31 @@ const io = require('socket.io')(http, {
     path: BASE_URL + 'socket.io'
 });
 
+const db = require('./database');
 
 app.get(BASE_URL, (req, res) => {
-    res.send("Oof");
+    res.send("<h1>32-seconds API</h1>")
+})
+
+
+app.get(`${BASE_URL}words`, async (req, res) => {
+    // Parsing options
+    options = {
+        amount: 5,
+        list: undefined
+    }
+
+    if (req.query.amount) {
+        options.amount = parseInt(req.query.amount)
+    }
+
+    if (req.query.list) {
+        options.list = req.query.list
+    } else {
+        return res.status(400).send('List param missing');
+    }
+
+    res.send(await (await db).getWords(options));
 });
 
 io.of(BASE_URL).on('connection', socket => {
@@ -25,5 +47,6 @@ app.use(cors({
 }));
 
 http.listen(PORT, () => {
-  console.log(`listening on http://localhost:${PORT}${BASE_URL}`);
+    console.log(`listening on http://localhost:${PORT}${BASE_URL}`);
+
 });
