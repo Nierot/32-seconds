@@ -2,57 +2,25 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const cors = require('cors');
 const body_parser = require('body-parser');
-
-const PORT = 8080;
-const BASE_URL = '/32-seconds/'
-const URI = `http://localhost:8080${BASE_URL}`
-
-const io = require('socket.io')(http, {
-    path: BASE_URL + 'socket.io'
-});
-
-const db = require('./database');
-
-app.get(BASE_URL, (req, res) => {
-    res.send("<h1>32-seconds API</h1>")
-})
+const db = require('./utils/database');
+const io = require('socket.io')(http, { path: 'socket.io' });
+const settings = require('./settings.json');
 
 
-app.get(`${BASE_URL}words`, body_parser.json(), async (req, res) => {
+app.get('/', require('./routes/base'));
 
-    console.dir(req.body);
+app.get(`/words`, body_parser.json(), (req, res) => require('./routes/rest/words')(req, res, db));
 
-    // Parsing options
-    options = {
-        amount: 5,
-        list: undefined
-    }
-
-    if (req.query.amount) {
-        options.amount = parseInt(req.query.amount)
-    }
-
-    if (req.query.list) {
-        options.list = req.query.list
-    } else {
-        return res.status(400).send('List param missing');
-    }
-
-    return res.send(await (await db).getWords(options));
-});
-
-io.of(BASE_URL).on('connection', socket => {
+io.on('connection', socket => {
     console.log('a user connected');
 
 });
 
-app.use(cors({
-    origin: URI
-}));
+app.use(cors);
 
 app.use(body_parser);
 
-http.listen(PORT, () => {
-    console.log(`listening on http://localhost:${PORT}${BASE_URL}`);
+http.listen(settings.port, () => {
+    console.log(`listening on http://localhost:${settings.port}`);
 
 });

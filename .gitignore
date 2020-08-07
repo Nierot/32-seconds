@@ -1,4 +1,5 @@
 *.db
+settings.json
 
 # Logs
 logs
