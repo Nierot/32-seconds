@@ -1,6 +1,7 @@
 const app = require('express')();
 const http = require('http').createServer(app);
 const cors = require('cors');
+const body_parser = require('body-parser');
 
 const PORT = 8080;
 const BASE_URL = '/32-seconds/'
@@ -17,7 +18,10 @@ app.get(BASE_URL, (req, res) => {
 })
 
 
-app.get(`${BASE_URL}words`, async (req, res) => {
+app.get(`${BASE_URL}words`, body_parser.json(), async (req, res) => {
+
+    console.dir(req.body);
+
     // Parsing options
     options = {
         amount: 5,
@@ -34,7 +38,7 @@ app.get(`${BASE_URL}words`, async (req, res) => {
         return res.status(400).send('List param missing');
     }
 
-    res.send(await (await db).getWords(options));
+    return res.send(await (await db).getWords(options));
 });
 
 io.of(BASE_URL).on('connection', socket => {
@@ -45,6 +49,8 @@ io.of(BASE_URL).on('connection', socket => {
 app.use(cors({
     origin: URI
 }));
+
+app.use(body_parser);
 
 http.listen(PORT, () => {
     console.log(`listening on http://localhost:${PORT}${BASE_URL}`);
