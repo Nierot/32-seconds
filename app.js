@@ -20,7 +20,7 @@ app.use(cors);
 app.set('view engine', 'ejs')
 app.use(body_parser);
 
-const listener = http.listen(8079, () => { // replace 8080 with 0
-    //parentPort.postMessage(listener.address().port);
+const listener = http.listen(settigns.development ? 8079 : 0, () => {
+    if (settings.development) parentPort.postMessage(listener.address().port)
     console.log(`listening on http://localhost:${listener.address().port}`);
 });
