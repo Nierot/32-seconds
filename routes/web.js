@@ -1,3 +1,3 @@
 module.exports = {
-    base: (req, res) => res.render('index'),
+    game: (req, res) => res.render('index')
 }
