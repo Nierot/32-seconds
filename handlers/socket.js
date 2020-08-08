@@ -1,6 +1,12 @@
+const settings = require('../settings.json');
+
 module.exports = (socket, users) => {
-    console.log(`User ${socket.id} connected`);
-    users[socket.id] = {};
+    const { id } = socket;
+    console.log(`User ${id} connected`);
+    users[id] = {
+        score: 0,
+        roundsPlayed: 0
+    };
     console.log(users);
 
     socket.on('message', msg => {
@@ -8,11 +14,12 @@ module.exports = (socket, users) => {
     });
 
     socket.on('disconnect', msg => {
-        console.log(`User ${socket.id} disconnected`);
-        delete users[socket.id];
+        console.log(`User ${id} disconnected`);
+        delete users[id];
     });
 
-    socket.on('new round', msg => {
-
+    socket.on('round finish', msg => {
+        const { score } = msg;
+        if (settings.verbose) console.log(`Team at socket ${id} has finished a round with score: ${score}`);
     });
 }
