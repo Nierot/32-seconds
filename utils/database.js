@@ -10,6 +10,7 @@ class DatabaseHelper {
             driver: sqlite3.Database
         })
         await this.#db.exec('CREATE TABLE IF NOT EXISTS words(word, list)');
+        await this.#db.exec('CREATE TABLE IF NOT EXISTS lists(userId, list)');
         sqlite3.verbose();
         return this;
     }
@@ -30,9 +31,30 @@ class DatabaseHelper {
         return this._parseWords(res);
     }
 
+    async getLists(userId) {
+        const res = await this.#db.all('SELECT * FROM lists WHERE userId = ?', [userId]);
+        return this._parseLists(res);
+    }
+
+    async getAllListsWithWords(userId) {
+        let listIds = await this.getLists(userId);
+        let result = {};
+        listIds.forEach(async list => {
+            let wordList = await this.getWords(list);
+            result[list] = wordList;
+        })
+        return result;
+    }
+
     _parseWords(list) {
         let result = []
         list.forEach(obj => result.push(obj.word));
+        return result;
+    }
+
+    _parseLists(list) {
+        let result = []
+        list.forEach(obj => result.push(obj.list));
         return result;
     }
 }

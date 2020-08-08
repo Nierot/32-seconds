@@ -1,5 +1,0 @@
-{
-    "api": "http://localhost:8080/",
-    "base-uri": "http://localhost:8080/32-seconds/",
-    "socket-io-path": "/32-seconds/socket.io/"
-}

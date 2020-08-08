@@ -17,5 +17,7 @@ module.exports = (req, res, db) => {
         return res.status(400).send('List param missing');
     }
 
+    let x = await db.getAllListsWithWords('niels')
+    console.log(x);
     return res.send(await (await db).getWords(options));
 }
