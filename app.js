@@ -22,5 +22,5 @@ app.use(body_parser);
 
 const listener = http.listen(settigns.development ? 8079 : 0, () => {
     if (settings.development) parentPort.postMessage(listener.address().port)
-    console.log(`Listening on http://localhost:${listener.address().port}`);
+    console.log(`Listening on http://localhost:${listener.address().port} `);
 });
