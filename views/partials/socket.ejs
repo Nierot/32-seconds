@@ -1,0 +1,25 @@
+<script>
+    var socket = io();
+
+    // Socket handlers
+    socket.on('id', msg => hasID() ? socket.emit('id', getID()) : socket.emit('no id'));
+ 
+    socket.on('new id', msg => setID(msg));
+
+    socket.on('id ok', msg => alert('ok'));
+
+    socket.on('id not ok', msg => alert('not ok'));
+
+    // Identification
+    function getID() {
+        return localStorage.getItem('id');
+    }
+
+    function hasID() {
+        return localStorage.getItem('id') !== null;
+    }
+
+    function setID(id) {
+        localStorage.setItem('id', id);
+    }
+</script>

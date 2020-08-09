@@ -15,7 +15,7 @@ let users = {};
 app.get('/words', body_parser.json(), (req, res) => restfulRoutes.words(req, res, db));
 app.get('/*', webRoutes.game);
 
-io.on('connection', socket => socketHandler(socket, users));
+io.on('connection', socket => socketHandler(socket, users, io));
 
 app.use(cors);
 app.set('view engine', 'ejs');
