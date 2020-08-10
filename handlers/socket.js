@@ -1,8 +1,11 @@
 const settings = require('../settings.json');
 const identification = require('../utils/identification');
+const { info, verbose, error } = require('nielog').Log;
+const User = require('../data/User');
 
-module.exports = (socket, users, io) => {
-    console.log(`User connected`);
+module.exports = (socket, users, io, log) => {
+    const { info, verbose, error } = log;
+    verbose(`User connected`);
     let id = identification.generateUserID();
 
     // IDENTIFICATION
@@ -12,30 +15,26 @@ module.exports = (socket, users, io) => {
         if (users[msg]) {
             socket.emit('id ok');
         } else {
-            socket.emit('id not ok');
+            socket.emit('new id', id);
+            users[id] = new User(id);
         }
     });
 
     socket.on('no id', msg => {
-        socket.emit('new id', identification.generateUserID());
+        socket.emit('new id', id);
+        users[id] = new User(id);
     });
 
-    users[id] = {
-        score: 0,
-        roundsPlayed: 0
-    };
-    console.log(users);
-
-    socket.on('alert', msg => console.log(msg));
+    verbose(users);
 
     socket.on('disconnect', msg => {
-        console.log(`User ${id} disconnected`);
+        verbose(`User ${id} disconnected`);
         delete users[id];
     });
 
     socket.on('round finish', msg => {
         const { score } = msg;
-        if (settings.verbose) console.log(`Team at socket ${id} has finished a round with score: ${score}`);
+        if (settings.verbose) verbose(`Team at socket ${id} has finished a round with score: ${score}`);
     });
 
     socket.on('chat message', msg => console.log(msg))
