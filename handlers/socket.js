@@ -25,8 +25,6 @@ module.exports = (socket, users, io, log) => {
         users[id] = new User(id);
     });
 
-    verbose(users);
-
     socket.on('disconnect', msg => {
         verbose(`User ${id} disconnected`);
         delete users[id];
@@ -37,5 +35,5 @@ module.exports = (socket, users, io, log) => {
         if (settings.verbose) verbose(`Team at socket ${id} has finished a round with score: ${score}`);
     });
 
-    socket.on('chat message', msg => console.log(msg))
+    socket.on('test', () => socket.emit('test'));
 }

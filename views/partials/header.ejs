@@ -1,6 +1,29 @@
-<script src="/socket.io/socket.io.js"></script>
+<!-- <script src="https://cdn.nierot.com/-/socket.io.js"></script> -->
 <script src="https://cdn.nierot.com/-/jquery.min.js"></script>
-<%- include('socket') %>
+<link id="style" rel="stylesheet" type="text/css" href="https://cdn.nierot.com/-/sakura-dark.css">
+<script>
+    const styles = [
+        'https://cdn.nierot.com/-/sakura-dark.css',
+        'https://cdn.nierot.com/-/sakura.css',
+        'https://cdn.nierot.com/-/sakura-earthly.css',
+        'https://cdn.nierot.com/-/sakura-vader.css',
+        'https://cdn.nierot.com/-/sakura-dark-solarized.css',
+        'https://cdn.nierot.com/-/sakura-ink.css'
+    ]
+
+    function switchStyle() {
+        let style = document.getElementById('style');
+        let current = styles.findIndex(stylesheet => { return stylesheet === style.href });
+        if (current === styles.length - 1) {
+            style.href = styles[0];
+        } else {
+            style.href = styles[current + 1];
+        }
+
+    }
+</script>
+<!-- <%- include('socket') %> -->
+
 <meta charset="UTF-8">
 <meta name="author" content="Nierot">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

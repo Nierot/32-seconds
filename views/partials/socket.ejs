@@ -1,16 +1,17 @@
 <script>
-    var socket = io();
-
-    // Socket handlers
-    socket.on('id', msg => hasID() ? socket.emit('id', getID()) : socket.emit('no id'));
- 
-    socket.on('new id', msg => setID(msg));
-
-    socket.on('id ok', msg => alert('ok'));
-
-    socket.on('id not ok', msg => alert('not ok'));
+    const socket = io.connect({
+        transports: ['websocket'],
+        secure: true
+    });
 
     // Identification
+
+    socket.on('id', msg => hasID() ? socket.emit('id', getID()) : socket.emit('no id'));
+
+    socket.on('new id', msg => setID(msg));
+
+    socket.on('id ok', console.log('session ID is ok'));
+
     function getID() {
         return localStorage.getItem('id');
     }
@@ -22,4 +23,19 @@
     function setID(id) {
         localStorage.setItem('id', id);
     }
+
+    // Tests
+
+    function testConnection() {
+        socket.emit('test');
+    }
+
+    socket.on('test', () => alert('test succeded'));
+
+    // Settings
+
+
+    
+    // Game
+
 </script>
