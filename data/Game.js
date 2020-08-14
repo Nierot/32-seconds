@@ -1,6 +1,6 @@
 class Game {
 
-    constructor(playerOne, socket) {
+    constructor(gameCode) {
         this.state = {
             roundsPlayed: 0,
             scores: {
@@ -13,17 +13,14 @@ class Game {
             dualPhone: false,
             amountOfWords: 5,
             amountOfRoundsPerTeam: 5,
+            gameCode: gameCode,
             playerIDs: {
-                playerOne: playerOne,
+                playerOne: undefined,
                 playerTwo: undefined
             },
             teams: {
                 teamOne: [],
                 teamTwo: []
-            },
-            sockets: {
-                teamOne: socket,
-                teamTwo: undefined
             }
         };
 
@@ -41,8 +38,12 @@ class Game {
         else throw new Error('Not a valid team');
     }
 
-    setTeamTwo(socket) {
-        this.settings.sockets.teamTwo = socket;
+    setTeamOne(id) {
+        this.settings.playerIDs.teamOne = id;
+    }
+
+    setTeamTwo(id) {
+        this.settings.playerIDs.teamTwo = id;
     }
 }
 

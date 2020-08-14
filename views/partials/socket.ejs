@@ -1,8 +1,5 @@
 <script>
-    const socket = io.connect({
-        transports: ['websocket'],
-        secure: true
-    });
+    const socket = io.connect('localhost:8001', {});
 
     // Identification
 
