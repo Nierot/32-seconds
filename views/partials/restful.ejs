@@ -1,0 +1,41 @@
+<script>
+    const dev = true;
+    let loc = location.href.replace(/^(.+?)\/*?$/, "$1");
+
+    $(() => {
+        if (!localStorage.getItem('id') || dev) connect();
+        else identify();
+    })
+
+
+    const connect = () => {
+        console.log('Connecting to the backend');
+        fetch(`${loc}/connect`)
+            .then(response => response.json())
+            .then(data => {
+                localStorage.setItem('id', data.id);
+                localStorage.setItem('spectator', data.spectator)
+            })
+            .catch(console.error)
+    }
+
+    const identify = () => {
+        fetch(`${loc}/identify`, {
+            method: 'POST',
+            body: { id: localStorage.getItem('id') }
+        }).then(resp => resp.json())
+            .then(console.log)
+            .catch(console.error)
+    }
+
+    const initGame = () => {
+        fetch(`${loc}/init`)
+            .then(resp => resp.json())
+            .then(data => console.log(data))
+            .catch(console.error)
+    } 
+
+    const updateSettings = () => {
+        let id = localStorage.getItem('id');
+    }
+</script>

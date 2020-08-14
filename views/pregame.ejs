@@ -1,0 +1,12 @@
+<div class="pregameDynamic">
+
+    <div class="join">
+        <div class="gamecode"></div>
+    </div>
+
+    <script>
+        let gamecodeDiv = document.querySelector('.gamecode');
+        let gamecode = localStorage.getItem('gamecode');
+        gamecodeDiv.innerHTML = `<h1> games.nierot.com/${localStorage.getItem('gamecode') || 'connecting'}`;
+    </script>
+</div>
