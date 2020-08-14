@@ -7,6 +7,26 @@
     <script>
         let gamecodeDiv = document.querySelector('.gamecode');
         let gamecode = localStorage.getItem('gamecode');
-        gamecodeDiv.innerHTML = `<h1> games.nierot.com/${localStorage.getItem('gamecode') || 'connecting'}`;
+        gamecodeDiv.innerHTML = `<h3>Join at games.nierot.com/${localStorage.getItem('gamecode') || ''}</h3>`;
+
+        let $gc = $('.gamecode');
+        let $tc = $('#twoClient');
+        let $sc = $('#spectatorCheck');
+
+        $('input[name=amountOfClients]').change(() => {
+            if ($tc.is(':checked')) {
+                $gc.show();
+            } else if (!$sc.is(':checked')) {
+                $gc.hide();
+            }
+        });
+
+        $sc.change(() => {
+            if ($sc.is(':checked')) {
+                $gc.show();
+            } else if (!$tc.is(':checked')) {
+                $gc.hide();
+            }
+        })
     </script>
 </div>
