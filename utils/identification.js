@@ -1,5 +1,3 @@
-const crypto = require('crypto');
-
 module.exports = {
 
     generateGameCode: () => {
@@ -11,6 +9,12 @@ module.exports = {
     },
 
     _generateRandomString: length => {
-        return crypto.randomBytes(Math.round(length/2)).toString('hex');
+        charSet = 'abcdefghijklmnopqrstuvwxyz';
+        var randomString = '';
+        for (var i = 0; i < length; i++) {
+            var randomPoz = Math.floor(Math.random() * charSet.length);
+            randomString += charSet.substring(randomPoz,randomPoz+1);
+        }
+        return randomString;
     },
 }

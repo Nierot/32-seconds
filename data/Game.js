@@ -1,5 +1,12 @@
 class Game {
 
+    MINIMUM_ROUNDS = 1;
+    MAXIMUM_ROUNDS = 20;
+    MINIMUM_WORDS = 1;
+    MAXIMUM_WORDS = 8;
+    MINIMUM_TIME = 10;
+    MAXIMUM_TIME = 60;
+
     constructor(gameCode) {
         this.state = {
             roundsPlayed: 0,
@@ -12,7 +19,9 @@ class Game {
         this.settings = {
             dualPhone: false,
             amountOfWords: 5,
-            amountOfRoundsPerTeam: 5,
+            amountOfRoundsPerTeam: 8,
+            timePerRound: 32,
+            allowSpectators: true,
             gameCode: gameCode,
             playerIDs: {
                 playerOne: undefined,
@@ -44,6 +53,48 @@ class Game {
 
     setTeamTwo(id) {
         this.settings.playerIDs.teamTwo = id;
+    }
+
+    setTimePerRound(time) {
+        if (time > this.MAXIMUM_TIME || time < this.MINIMUM_TIME) {
+            return false;
+        } else {
+            this.settings.timePerRound = time;
+            return true;
+        }
+    }
+
+    setAmountOfRoundsPerTeam(rounds) {
+        if (rounds > this.MAXIMUM_ROUNDS || rounds < this.MINIMUM_ROUNDS) {
+            return false;
+        } else {
+            this.settings.amountOfRoundsPerTeam = rounds;
+            return true;
+        }
+    }
+
+    setAmountOfWords(words) {
+        if (words > this.MAXIMUM_WORDS || words < this.MINIMUM_WORDS) {
+            return false;
+        } else {
+            this.settings.amountOfWords = words;
+            return true;
+        }
+    }
+
+    setDualPhones(phones) {
+        this.settings.dualPhone = phones;
+    }
+
+    setAllowSpectators(spectators) {
+        this.settings.allowSpectators = spectators;
+    }
+
+    toJson() {
+        return {
+            state: this.state,
+            settings: this.settings
+        }
     }
 }
 
