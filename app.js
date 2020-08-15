@@ -12,14 +12,15 @@ const socketHandler = require('./handlers/socket');
 const { Log } = require('nielog');
 const Game = require('./data/Game');
 
-let users = [];
-let game = undefined;
-let gamecode = undefined;
+var users = [];
+var gamecode = undefined;
 
 app.get('/*/words', body_parser.json(), (req, res) => restfulRoutes.words(req, res, db));
 app.get('/*/connect', (req, res) => restfulRoutes.connect(req, res, users));
-app.get('/*/init', (req, res) => restfulRoutes.init(req, res, users, gamecode, game));
+app.get('/*/init', (req, res) => restfulRoutes.init(req, res, users, gamecode));
 app.post('/*/identify', body_parser.json(), (req, res) => restfulRoutes.identify(req, res, users));
+app.get('/*/state', (req, res) => restfulRoutes.state(req, res));
+app.post('/*/settings', body_parser.json(), (req, res) => restfulRoutes.settings(req, res));
 app.get('/*', webRoutes.game);
 
 // io.on('connection', socket => socketHandler(socket, users, io, Log));

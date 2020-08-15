@@ -15,6 +15,7 @@
             .then(data => {
                 localStorage.setItem('id', data.id);
                 localStorage.setItem('spectator', data.spectator)
+                initGame();
             })
             .catch(console.error)
     }
@@ -31,11 +32,21 @@
     const initGame = () => {
         fetch(`${loc}/init`)
             .then(resp => resp.json())
-            .then(data => console.log(data))
+            .then(data => localStorage.setItem('gamecode', data.gamecode))
             .catch(console.error)
     } 
 
-    const updateSettings = () => {
-        let id = localStorage.getItem('id');
+    const updateSettings = (type, value) => {
+        console.log(type, value)
+        let body = {}
+        body[type] = value;
+        fetch(`${loc}/settings`,{
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: { "Content-Type": "application/json" }
+        })
+            .then(resp => resp.json())
+            .then(data => console.log(data))
+            .catch(console.error)
     }
 </script>

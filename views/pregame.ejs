@@ -2,19 +2,21 @@
 
     <div class="join">
         <div class="gamecode"></div>
+        <button onclick="javascript:settings()">settings</button>
     </div>
 
     <script>
         let gamecodeDiv = document.querySelector('.gamecode');
         let gamecode = localStorage.getItem('gamecode');
-        gamecodeDiv.innerHTML = `<h3>Join at games.nierot.com/${localStorage.getItem('gamecode') || ''}</h3>`;
-
+        gamecodeDiv.innerHTML = `<h3>join at games.nierot.com/${localStorage.getItem('gamecode') }</h3>`;
+        
         let $gc = $('.gamecode');
         let $tc = $('#twoClient');
         let $sc = $('#spectatorCheck');
 
         $('input[name=amountOfClients]').change(() => {
             if ($tc.is(':checked')) {
+                gamecodeDiv.innerHTML = `<h3>join at games.nierot.com/${localStorage.getItem('gamecode') }</h3>`;
                 $gc.show();
             } else if (!$sc.is(':checked')) {
                 $gc.hide();
@@ -23,10 +25,15 @@
 
         $sc.change(() => {
             if ($sc.is(':checked')) {
+                gamecodeDiv.innerHTML = `<h3>join at games.nierot.com/${localStorage.getItem('gamecode') }</h3>`;
                 $gc.show();
             } else if (!$tc.is(':checked')) {
                 $gc.hide();
             }
         })
     </script>
+
+
+    <!-- This teams names -->
+    <!-- Current players -->
 </div>
