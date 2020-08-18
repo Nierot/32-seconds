@@ -69,16 +69,12 @@
             $('.pregame').show();
         }
 
-        function settings() {
-            $('.settings').show();
-            $('.pregame').hide();
-        }
-
         const amountOfRoundsOnInput = () => updateSettings('rounds', document.getElementById('amountOfRounds').value);
         const amountOfWordsOnInput = () => updateSettings('words', document.getElementById('amountOfWords').value);
         const amountOfTimeOnInput = () => updateSettings('time', document.getElementById('timePerRound').value);
         const setSinglePhone = () => updateSettings('phones', false);
-        const setDualPhone = () => updateSettings('phones', true)
+        const setDualPhone = () => updateSettings('phones', true);
+        const setSpectators = () => updateSettings('spectators', document.getElementById('spectatorCheck').checked);
 
     </script>
 
@@ -96,18 +92,18 @@
         </label> -->
         <label>
             amount of rounds:
-            <input type="number" id="amountOfRounds" value=8 oninput="amountOfRoundsOnInput()">
-            <!-- <p><small>amount of rounds each team plays</small></p> -->
+            <input type="number" id="amountOfRounds" value=8 min=1 max=20 oninput="amountOfRoundsOnInput()">
+            <small>1..20</small>
         </label>
         <label>
             amount of words:
-            <input type="number" id="amountOfWords" value=5 oninput="amountOfWordsOnInput()">
-            <!-- <p><small>amount of words to guess per round</small></p> -->
+            <input type="number" id="amountOfWords" value=5 min=1 max=8 oninput="amountOfWordsOnInput()">
+            <small>1..8</small>
         </label>
         <label>
             time per round:
-            <input type="number" id="timePerRound" value=32 oninput="amountOfTimeOnInput()">
-            <!-- <p><small>time each team has to guess the words</small></p> -->
+            <input type="number" id="timePerRound" value=32 min=10 max=60 oninput="amountOfTimeOnInput()">
+            <small>10..60</small>
         </label>
         <br>
         <label>
@@ -118,12 +114,12 @@
         </label>
         <label>
             allow spectators:
-            <input type="checkbox" id="spectatorCheck" checked>
+            <input type="checkbox" id="spectatorCheck" onclick="setSpectators()" checked>
             <p><small>a spectator can see the score when a match is in progress</small></p>
         </label>
         <br>
         <label>
-            <button onclick="javascript:pregame()">start a lobby</button>
+            <button onclick="javascript:pregame()">to lobby</button>
         </label>
     </div>
 </div>

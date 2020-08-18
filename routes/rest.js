@@ -37,11 +37,14 @@ module.exports = {
         verbose(users)
     },
 
-    init: async (req, res, users, gamecode) => {
-        if (!settingsFile.gamehub.active) gamecode = 'mfsb'
-        process.game = new Game(gamecode);
-        res.json({ gamecode: gamecode });
-        verbose('Started a new game with gamecode: ' + gamecode);
+    init: async (req, res) => {
+        if (!settingsFile.gamehub.active) process.gamecode = 'mfsb'
+        if (process.game === undefined) {
+            process.game = new Game(process.gamecode);
+            console.log('Started a new game with gamecode: ' + process.gamecode);
+        }
+        res.json({ gamecode: process.gamecode });
+        
     },
 
     identify: async (req, res, users) => {
@@ -88,7 +91,6 @@ module.exports = {
             } else if (req.body.words) {
                 if (!game.setAmountOfWords(parseInt(req.body.words))) return res.status(400).json({ bad_request: 'min/max exceeded' })
             } else if (req.body.phones !== undefined) {
-                console.log(req.body)
                 game.setDualPhones(req.body.phones);
             } else if (req.body.spectators !== undefined) {
                 game.setAllowSpectators(req.body.spectators);

@@ -1,6 +1,10 @@
 module.exports = {
     game: (req, res) => {
-        res.render('index')
+        // if (process.users.length > 1) {
+            // res.render('lobby');
+        // } else {
+            res.render('index');
+        // }
     },
     
     e404: (req, res) => {

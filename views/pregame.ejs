@@ -2,10 +2,47 @@
 
     <div class="join">
         <div class="gamecode"></div>
+        <br>
+        <label>
+            teamname: 
+            <input type="text" id="teamname">
+            <button onclick="submitTeamname()">submit</button>
+        </label>
+        <table>
+            <thead>
+                <tr>
+                    <th id="nameTeam1">team 1</th>
+                    <th id="nameTeam2">team 2</th>
+                </tr>
+            </thead>
+            <tbody id="players">
+                <tr>
+                    <td>niels</td>
+                    <td>oof</td>
+                </tr>
+                <tr>
+                    <td>niels</td>
+                    <td>oof</td>
+                </tr>
+                <tr>
+                    <td>niels</td>
+                    <td>oof</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- This teams names -->
+    
+        <!-- Current players -->
+        <br>
         <button onclick="javascript:settings()">settings</button>
     </div>
 
-    <script>
+    <script>        
+        function settings() {
+            $('.settings').show();
+            $('.pregame').hide();
+        }
+
         let gamecodeDiv = document.querySelector('.gamecode');
         let gamecode = localStorage.getItem('gamecode');
         gamecodeDiv.innerHTML = `<h3>join at games.nierot.com/${localStorage.getItem('gamecode') }</h3>`;
@@ -13,6 +50,10 @@
         let $gc = $('.gamecode');
         let $tc = $('#twoClient');
         let $sc = $('#spectatorCheck');
+
+        const submitTeamname = () => {
+            fetch(`${loc}/settings`)
+        }
 
         $('input[name=amountOfClients]').change(() => {
             if ($tc.is(':checked')) {
@@ -32,8 +73,4 @@
             }
         })
     </script>
-
-
-    <!-- This teams names -->
-    <!-- Current players -->
 </div>

@@ -5,6 +5,8 @@
     $(() => {
         if (!localStorage.getItem('id') || dev) connect();
         else identify();
+        
+        window.Polling = setInterval(() => updateGameState(), 5000);
     })
 
 
@@ -46,7 +48,20 @@
             headers: { "Content-Type": "application/json" }
         })
             .then(resp => resp.json())
-            .then(data => console.log(data))
+            .then(data => {
+                if (data.settings) localStorage.setItem('settings', JSON.stringify(data.settings));
+                if (data.state) localStorage.setItem('state', JSON.stringify(data.state));
+                if (data.bad_request) alert('Maximum or minimum reached')
+            })
             .catch(console.error)
+    }
+
+    const updateGameState = () => {
+        fetch(`${loc}/state`)
+            .then(resp => resp.json())
+            .then(data => {
+                localStorage.setItem('settings', JSON.stringify(data.settings));
+                localStorage.setItem('state', JSON.stringify(data.state));
+            })
     }
 </script>
