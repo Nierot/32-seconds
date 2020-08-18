@@ -3,11 +3,17 @@
 
     // Identification
 
-    socket.on('id', msg => hasID() ? socket.emit('id', getID()) : socket.emit('no id'));
+    socket.on('id', msg => {
+        if (hasID()) {
+            socket.emit('id', getID())
+        } else {
+            socket.emit('no id')
+        }
+    })
 
     socket.on('new id', msg => setID(msg));
 
-    socket.on('id ok', console.log('session ID is ok'));
+    socket.on('id ok', msg => console.log('session ID is ok'));
 
     function getID() {
         return localStorage.getItem('id');
@@ -31,7 +37,10 @@
 
     // Settings
 
-
+    const startLobby = () => {
+        localStorage.setItem('lobby', true);
+        socket.emit('new lobby', localStorage.getItem('id'));
+    }
     
     // Game
 

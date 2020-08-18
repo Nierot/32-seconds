@@ -1,8 +1,8 @@
 <div class="pregameDynamic">
 
     <div class="join">
-        <div class="gamecode"></div>
-        <br>
+        <!-- <div class="gamecode"></div> -->
+        <!-- <br> -->
         <label>
             teamname: 
             <input type="text" id="teamname">
@@ -34,7 +34,7 @@
     
         <!-- Current players -->
         <br>
-        <button onclick="javascript:settings()">settings</button>
+        <!-- <button onclick="javascript:settings()">settings</button> -->
     </div>
 
     <script>        
@@ -43,34 +43,34 @@
             $('.pregame').hide();
         }
 
-        let gamecodeDiv = document.querySelector('.gamecode');
-        let gamecode = localStorage.getItem('gamecode');
-        gamecodeDiv.innerHTML = `<h3>join at games.nierot.com/${localStorage.getItem('gamecode') }</h3>`;
+        // let gamecodeDiv = document.querySelector('.gamecode');
+        // let gamecode = localStorage.getItem('gamecode');
+        // gamecodeDiv.innerHTML = `<h3>join at games.nierot.com/${localStorage.getItem('gamecode') }</h3>`;
         
-        let $gc = $('.gamecode');
-        let $tc = $('#twoClient');
-        let $sc = $('#spectatorCheck');
+        // let $gc = $('.gamecode');
+        // let $tc = $('#twoClient');
+        // let $sc = $('#spectatorCheck');
 
-        const submitTeamname = () => {
-            fetch(`${loc}/settings`)
-        }
+        // const submitTeamname = () => {
+        //     fetch(`${loc}/settings`)
+        // }
 
-        $('input[name=amountOfClients]').change(() => {
-            if ($tc.is(':checked')) {
-                gamecodeDiv.innerHTML = `<h3>join at games.nierot.com/${localStorage.getItem('gamecode') }</h3>`;
-                $gc.show();
-            } else if (!$sc.is(':checked')) {
-                $gc.hide();
-            }
-        });
+        // $('input[name=amountOfClients]').change(() => {
+        //     if ($tc.is(':checked')) {
+        //         gamecodeDiv.innerHTML = `<h3>join at games.nierot.com/${localStorage.getItem('gamecode') }</h3>`;
+        //         $gc.show();
+        //     } else if (!$sc.is(':checked')) {
+        //         $gc.hide();
+        //     }
+        // });
 
-        $sc.change(() => {
-            if ($sc.is(':checked')) {
-                gamecodeDiv.innerHTML = `<h3>join at games.nierot.com/${localStorage.getItem('gamecode') }</h3>`;
-                $gc.show();
-            } else if (!$tc.is(':checked')) {
-                $gc.hide();
-            }
-        })
+        // $sc.change(() => {
+        //     if ($sc.is(':checked')) {
+        //         gamecodeDiv.innerHTML = `<h3>join at games.nierot.com/${localStorage.getItem('gamecode') }</h3>`;
+        //         $gc.show();
+        //     } else if (!$tc.is(':checked')) {
+        //         $gc.hide();
+        //     }
+        // })
     </script>
 </div>

@@ -67,6 +67,7 @@
         function pregame() {
             $('.settings').hide();
             $('.pregame').show();
+            startLobby();
         }
 
         const amountOfRoundsOnInput = () => updateSettings('rounds', document.getElementById('amountOfRounds').value);
@@ -106,7 +107,7 @@
             <small>10..60</small>
         </label>
         <br>
-        <label>
+        <!-- <label>
             amount of phones:
             1 <input type="radio" id="oneClient" name="amountOfClients" onclick="setSinglePhone()" checked>
             2 <input type="radio" id="twoClient" name="amountOfClients" onclick="setDualPhone()">
@@ -116,10 +117,10 @@
             allow spectators:
             <input type="checkbox" id="spectatorCheck" onclick="setSpectators()" checked>
             <p><small>a spectator can see the score when a match is in progress</small></p>
-        </label>
+        </label> -->
         <br>
         <label>
-            <button onclick="javascript:pregame()">to lobby</button>
+            <button onclick="javascript:pregame()">start lobby</button>
         </label>
     </div>
 </div>

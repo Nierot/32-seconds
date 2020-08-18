@@ -23,7 +23,7 @@ process.gamecode = undefined;
 // app.post('/*/settings', body_parser.json(), (req, res) => restfulRoutes.settings(req, res));
 app.get('/*', webRoutes.game);
 
-io.on('connection', socket => socketHandler(socket, process.users, io, Log));
+io.on('connection', socket => socketHandler(socket, io, Log));
 
 app.use(cors);
 app.set('view engine', 'ejs');
@@ -31,6 +31,9 @@ app.use(body_parser);
 app.set('views', settings.views_dir);
 
 const listener = http.listen(settings.development ? 8079 : 0, () => {
+
+    process.games = {};
+    
     if (settings.gamehub.active) {
         parentPort.postMessage(listener.address().port);
         parentPort.on('message', msg => {

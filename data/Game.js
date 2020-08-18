@@ -7,7 +7,7 @@ class Game {
     MINIMUM_TIME = 10;
     MAXIMUM_TIME = 60;
 
-    constructor(gameCode) {
+    constructor(gameCode, playerOne) {
         this.state = {
             roundsPlayed: 0,
             scores: {
@@ -24,7 +24,7 @@ class Game {
             allowSpectators: true,
             gameCode: gameCode,
             playerIDs: {
-                playerOne: undefined,
+                playerOne: playerOne,
                 playerTwo: undefined
             },
             teams: {
