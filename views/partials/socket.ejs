@@ -1,5 +1,6 @@
 <script>
     const socket = io.connect();
+    let game = {};
 
     // Identification
 
@@ -13,23 +14,28 @@
 
     socket.on('new id', msg => setID(msg));
 
-    socket.on('id ok', msg => console.log('session ID is ok'));
+    socket.on('id ok', msg => {
+        console.log('session ID is ok');
+        if (msg !== undefined && msg !== null) {
+            game = msg;
+        }
+    });
 
-    function getID() {
+    const getID = () => {
         return localStorage.getItem('id');
     }
 
-    function hasID() {
+    const hasID = () => {
         return localStorage.getItem('id') !== null;
     }
 
-    function setID(id) {
+    const setID = id => {
         localStorage.setItem('id', id);
     }
 
     // Tests
 
-    function testConnection() {
+    const testConnection = () => {
         socket.emit('test');
     }
 
@@ -41,6 +47,8 @@
         localStorage.setItem('lobby', true);
         socket.emit('new lobby', localStorage.getItem('id'));
     }
+
+    socket.on('lobby', msg => game = msg);
     
     // Game
 

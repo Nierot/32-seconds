@@ -65,17 +65,20 @@
 
     <script>
         function pregame() {
-            $('.settings').hide();
-            $('.pregame').show();
+            document.querySelector('.settings').hide;
+            document.querySelector('.pregame').show;
+            // $('.settings').hide();
+            // $('.pregame').show();
             startLobby();
         }
 
         const amountOfRoundsOnInput = () => updateSettings('rounds', document.getElementById('amountOfRounds').value);
         const amountOfWordsOnInput = () => updateSettings('words', document.getElementById('amountOfWords').value);
         const amountOfTimeOnInput = () => updateSettings('time', document.getElementById('timePerRound').value);
-        const setSinglePhone = () => updateSettings('phones', false);
-        const setDualPhone = () => updateSettings('phones', true);
-        const setSpectators = () => updateSettings('spectators', document.getElementById('spectatorCheck').checked);
+        const amountOfPlayersOnInput = () => updateSettings('players', document.getElementById('amountOfPlayers').value);
+        // const setSinglePhone = () => updateSettings('phones', false);
+        // const setDualPhone = () => updateSettings('phones', true);
+        // const setSpectators = () => updateSettings('spectators', document.getElementById('spectatorCheck').checked);
 
     </script>
 
@@ -105,6 +108,11 @@
             time per round:
             <input type="number" id="timePerRound" value=32 min=10 max=60 oninput="amountOfTimeOnInput()">
             <small>10..60</small>
+        </label>
+        <label>
+            amount of players per team:
+            <input type="number" id="amountOfPlayers" value=4 min=2 max=10 oninput="amountOfPlayersOnInput()">
+            <small>2..10</small>
         </label>
         <br>
         <!-- <label>
