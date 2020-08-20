@@ -4,10 +4,15 @@
         <!-- <div class="gamecode"></div> -->
         <!-- <br> -->
         <label>
-            teamname: 
-            <input type="text" id="teamname">
-            <button onclick="submitTeamname()">submit</button>
+            teamname 1: 
+            <input type="text" id="teamname1">
         </label>
+        <br>
+        <label>
+            teamname 2:
+            <input type="text" id="teamname2">
+        </label>
+        <button onclick="submitTeamname()">submit</button>
         <table>
             <thead>
                 <tr>
@@ -17,16 +22,44 @@
             </thead>
             <tbody id="players">
                 <tr>
-                    <td>niels</td>
-                    <td>oof</td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>niels</td>
-                    <td>oof</td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>niels</td>
-                    <td>oof</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
@@ -41,6 +74,20 @@
         function settings() {
             document.querySelector('.settings').hidden = false;
             document.querySelector('.pregame').hidden = true;
+        }
+
+        let teamname1 = document.querySelector('#teamname1');
+        let teamname2 = document.querySelector('#teamname2');
+
+        const submitTeamname = () => {
+            if (teamname1.value !== '') {
+                updateSettings('teamname1', teamname1.value);
+                document.querySelector('#nameTeam1').innerText = teamname1.value;
+            }
+            if (teamname2.value !== '') {
+                updateSettings('teamname2', teamname2.value);
+                document.querySelector('#nameTeam2').innerText = teamname2.value;
+            }
         }
 
         // let gamecodeDiv = document.querySelector('.gamecode');

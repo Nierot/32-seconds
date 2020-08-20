@@ -40,11 +40,42 @@ module.exports = (socket, io, log) => {
 
     // SETTINGS
 
+    updateSettings = id => socket.emit('setting changes', process.games[id]);
 
+    socket.on('setting rounds', msg => {
+        process.games[msg.id].setAmountOfRoundsPerTeam(msg.setting);
+        updateSettings(msg.id);
+    })
+
+    socket.on('setting words', msg => {
+        process.games[msg.id].setAmountOfWords(msg.setting);
+        updateSettings(msg.id);
+    })
+
+    socket.on('setting time', msg => {
+        process.games[msg.id].setTimePerRound(msg.setting);
+        updateSettings(msg.id);
+    })
+
+    socket.on('setting players', msg => {
+        process.games[msg.id].setAmountOfPlayersPerTeam(msg.setting);
+        updateSettings(msg.id);
+    })
+
+    socket.on('setting teamname1', msg => {
+        process.games[msg.id].setTeamNameOne(msg.setting);
+        updateSettings(msg.id);
+    })
+
+    socket.on('setting teamname2', msg => {
+        process.games[msg.id].setTeamNameTwo(msg.setting);
+        updateSettings(msg.id);
+    })
 
     // LOBBY
 
     socket.on('new lobby', msg => {
+        info(`Starting a new lobby for ${msg}`);
         process.games[msg] = new Game(identification.generateGameCode(), msg);
         socket.emit('lobby', process.games[msg])
     })

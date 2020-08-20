@@ -1,6 +1,5 @@
 <script>
     const socket = io.connect();
-    let game = {};
 
     // Identification
 
@@ -16,8 +15,13 @@
 
     socket.on('id ok', msg => {
         console.log('session ID is ok');
+        let split = document.URL.split('/')[3];
+        if ((getGame() === null || getGame() === undefined) && (split === '' || split === '/')) {
+            console.log('initializing game');
+            startLobby();
+        }
         if (msg !== undefined && msg !== null) {
-            game = msg;
+            setGame(msg);
         }
     });
 
@@ -45,10 +49,21 @@
 
     const startLobby = () => {
         localStorage.setItem('lobby', true);
-        socket.emit('new lobby', localStorage.getItem('id'));
+        socket.emit('new lobby', getID());
     }
 
-    socket.on('lobby', msg => game = msg);
+    const updateSettings = (type, setting) => {
+        socket.emit(`setting ${type}`, { id: getID(), setting: setting });
+    }
+
+    const setGame = game => localStorage.setItem('game', JSON.stringify(game));
+    const getGame = () => {
+        return JSON.parse(localStorage.getItem('game'));
+    }
+
+    socket.on('setting changes', game => setGame(game));
+
+    socket.on('lobby', msg => setGame(msg));
     
     // Game
 

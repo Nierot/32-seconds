@@ -20,10 +20,10 @@ class Game {
 
         this.settings = {
             dualPhone: false,
-            amountOfWords: 5,
-            amountOfRoundsPerTeam: 8,
-            timePerRound: 32,
-            amountOfPlayersPerTeam: 4,
+            amountOfWords: '5',
+            amountOfRoundsPerTeam: '8',
+            timePerRound: '32',
+            amountOfPlayersPerTeam: '4',
             allowSpectators: true,
             gameCode: gameCode,
             playerIDs: {
@@ -33,6 +33,10 @@ class Game {
             teams: {
                 teamOne: [],
                 teamTwo: []
+            },
+            teamNames: {
+                teamOne: '',
+                teamTwo: ''
             }
         };
 
@@ -58,6 +62,14 @@ class Game {
         this.settings.playerIDs.teamTwo = id;
     }
 
+    setTeamNameOne(name) {
+        this.settings.teamNames.teamOne = name;
+    }
+
+    setTeamNameTwo(name) {
+        this.settings.teamNames.teamTwo = name;
+    }
+
     setTimePerRound(time) {
         if (time > this.MAXIMUM_TIME || time < this.MINIMUM_TIME) {
             return false;
@@ -81,6 +93,15 @@ class Game {
             return false;
         } else {
             this.settings.amountOfWords = words;
+            return true;
+        }
+    }
+
+    setAmountOfPlayersPerTeam(players) {
+        if (players > this.MAXIMUM_PLAYERS || players < this.MINIMUM_PLAYERS) {
+            return false;
+        } else {
+            this.settings.amountOfPlayersPerTeam = players;
             return true;
         }
     }
