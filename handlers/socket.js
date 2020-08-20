@@ -15,11 +15,10 @@ module.exports = (socket, io, log) => {
         console.log(msg);
         console.log(process.users)
         if (process.users[msg]) {
-            console.log('oof')
-            socket.emit('id ok');
+            socket.emit('id ok', process.games[msg]);
         } else {
             if (msg !== '' && msg !== undefined && msg !== null) {
-                socket.emit('id ok');
+                socket.emit('id ok', process.games[msg]);
                 process.users[msg] = new User(msg, socket);
             } else {
                 socket.emit('new id', id);
@@ -47,6 +46,7 @@ module.exports = (socket, io, log) => {
 
     socket.on('new lobby', msg => {
         process.games[msg] = new Game(identification.generateGameCode(), msg);
+        socket.emit('lobby', process.games[msg])
     })
 
     // GAME

@@ -1,11 +1,13 @@
 class Game {
 
     MINIMUM_ROUNDS = 1;
-    MAXIMUM_ROUNDS = 20;
+    MAXIMUM_ROUNDS = 24;
     MINIMUM_WORDS = 1;
     MAXIMUM_WORDS = 8;
     MINIMUM_TIME = 10;
     MAXIMUM_TIME = 60;
+    MINIMUM_PLAYERS = 1;
+    MAXIMUM_PLAYERS = 8;
 
     constructor(gameCode, playerOne) {
         this.state = {
@@ -21,6 +23,7 @@ class Game {
             amountOfWords: 5,
             amountOfRoundsPerTeam: 8,
             timePerRound: 32,
+            amountOfPlayersPerTeam: 4,
             allowSpectators: true,
             gameCode: gameCode,
             playerIDs: {
@@ -95,6 +98,10 @@ class Game {
             state: this.state,
             settings: this.settings
         }
+    }
+
+    toString() {
+        return JSON.stringify(this.toJson())
     }
 }
 

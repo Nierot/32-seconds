@@ -65,10 +65,8 @@
 
     <script>
         function pregame() {
-            document.querySelector('.settings').hide;
-            document.querySelector('.pregame').show;
-            // $('.settings').hide();
-            // $('.pregame').show();
+            document.querySelector('.settings').hidden = true;
+            document.querySelector('.pregame').hidden = false;
             startLobby();
         }
 
