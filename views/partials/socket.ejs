@@ -11,7 +11,10 @@
         }
     })
 
-    socket.on('new id', msg => setID(msg));
+    socket.on('new id', msg => {
+        setID(msg);
+        location.reload();
+    });
 
     socket.on('id ok', msg => {
         console.log('session ID is ok');
@@ -45,6 +48,10 @@
 
     socket.on('test', () => alert('test succeded'));
 
+    const getLatestGame = () => socket.emit('get game', getID());
+
+    socket.on('game', game => setGame(game));
+
     // Settings
 
     const startLobby = () => {
@@ -61,10 +68,56 @@
         return JSON.parse(localStorage.getItem('game'));
     }
 
-    socket.on('setting changes', game => setGame(game));
+    socket.on('setting changes', game => {
+        setGame(game);
+        console.log(game);
+    });
 
     socket.on('lobby', msg => setGame(msg));
+
+    const addList = list => socket.emit('setting list', { id: getID(), setting: list });
+
+    const getLists = () => socket.emit('get lists');
+
+    const sendNewList = () => socket.emit('new list', window.currentList);
+
+    socket.on('lists', lists => {
+        console.log(lists);
+        localStorage.setItem('lists', JSON.stringify(lists));
+    })
     
     // Game
+
+    const scorePoint = () => socket.emit('score', getID());
+
+    const retractPoint = () => socket.emit('undo score', getID());
+
+    const getWords = (no) => {
+        let amount = no || 5;
+        let res = [];
+        for (i = 0; i < amount; i++) {
+            res.push(getWord());
+        }
+        return res;
+    }
+
+    const getWord = () => {
+        let words = getGame().words;
+        let randInt = randomInteger(0, words.length - 1);
+        let word = words[randInt];
+        delete words[randInt];
+        getGame().words = words;
+        return word;
+    }
+
+    const randomInteger = (min, max) => {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    socket.on('game update', msg => {
+        setGame(msg)
+        console.log(msg);
+    });
+
 
 </script>

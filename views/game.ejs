@@ -1,3 +1,60 @@
 <div class="gameDynamic">
-    <h1>game</h1>
+    <style>
+        .word {
+            color: #ffffff !important;
+        }
+        .word:hover {
+            color: #afafaf !important;
+        }
+    </style>
+
+    <script>
+        const wordCorrect = elem => {
+            let attr = elem.getAttribute('data-crossed');
+            if (attr === null || attr === false || attr === 'false') {
+                elem.setAttribute('data-crossed', true);
+                elem.setAttribute('style', 'text-decoration: line-through');
+                scorePoint();
+            } else {
+                elem.setAttribute('data-crossed', false);
+                elem.setAttribute('style', '');
+                retractPoint();
+            }
+        }
+
+        const getWordElement = word => {
+            return `
+                <a class="word" onclick="wordCorrect(this);">
+                    <h2>${word}</h2>
+                </a>
+                `
+        }
+    </script>
+    <div class="timer">
+        <h1>
+            <center>
+                <span id="timeLeft">32</span>
+                 seconds left
+            </center>
+        </h1>
+    </div>
+    <div class="words">
+        <center>
+            <a class="word" onclick="wordCorrect(this);">
+                <h2>Word</h2>
+            </a>
+            <a class="word" onclick="wordCorrect(this);">
+                <h2>Word</h2>
+            </a>
+            <a class="word" onclick="wordCorrect(this);">
+                <h2>Word</h2>
+            </a>
+            <a class="word" onclick="wordCorrect(this);">
+                <h2>Word</h2>
+            </a>
+            <a class="word" onclick="wordCorrect(this);">
+                <h2>Word</h2>
+            </a>
+        </center>
+    </div>
 </div>

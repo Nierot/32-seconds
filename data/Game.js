@@ -1,3 +1,5 @@
+const random = require('../utils/random');
+
 class Game {
 
     MINIMUM_ROUNDS = 1;
@@ -18,6 +20,8 @@ class Game {
             }
         };
 
+        this.words = [];
+
         this.settings = {
             dualPhone: false,
             amountOfWords: '5',
@@ -37,12 +41,44 @@ class Game {
             teamNames: {
                 teamOne: '',
                 teamTwo: ''
-            }
+            },
+            lists: []
         };
 
     }
 
-    incrementScoreTeamOne(scored, team) {
+    addList(list) {
+        return new Promise((res, rej) => {
+            this.settings.lists.push(list);
+            process.db.getAllWords(list)
+                .then(words => words.forEach(word => this.words.push(word)))
+                .then(res())
+                .catch(err => {
+                    console.error(err);
+                    rej(err);
+                });
+        })
+    }
+
+    getWords(amount) {
+        let result = [];
+        for (i = 0; i < amount; i++) {
+            result.push(this._getWord());
+            if (this.words.length === 0) {
+                break;
+            }
+        }
+        return result;
+    }
+
+    _getWord() {
+        let int = random.randomInteger(0, this.words.length);
+        let word = this.words[int];
+        delete this.words[int];
+        return word;
+    }
+
+    incrementScore(scored, team) {
         if (team === 1) this.state.scores.teamOne += scored;
         else if (team === 2) this.state.scores.teamTwo += scored;
         else throw new Error('Not a valid team');
@@ -60,6 +96,10 @@ class Game {
 
     setTeamTwo(id) {
         this.settings.playerIDs.teamTwo = id;
+    }
+
+    isTeamOne(id) {
+        return this.settings.teams.teamOne === id;
     }
 
     setTeamNameOne(name) {

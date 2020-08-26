@@ -69,11 +69,27 @@
             document.querySelector('.pregame').hidden = false;
             startLobby();
         }
+        setTimeout(() => {
+            getLists();
+            setTimeout(() => {
+                JSON.parse(localStorage.getItem('lists')).forEach(list => document.querySelector('#selectedWordLists').innerHTML += `<option value=${list.name}>${list.name}</option>`);
+            }, 200);
+        }, 200);
+        
 
         const amountOfRoundsOnInput = () => updateSettings('rounds', document.getElementById('amountOfRounds').value);
         const amountOfWordsOnInput = () => updateSettings('words', document.getElementById('amountOfWords').value);
         const amountOfTimeOnInput = () => updateSettings('time', document.getElementById('timePerRound').value);
         const amountOfPlayersOnInput = () => updateSettings('players', document.getElementById('amountOfPlayers').value);
+        const selectedWordListsOnInput = elem => {
+            console.log(elem)
+            updateSettings('list', elem.value);
+        }
+
+        const reset = () => {
+            localStorage.clear();
+            location.reload(true);
+        }
         // const setSinglePhone = () => updateSettings('phones', false);
         // const setDualPhone = () => updateSettings('phones', true);
         // const setSpectators = () => updateSettings('spectators', document.getElementById('spectatorCheck').checked);
@@ -83,6 +99,10 @@
     <h1>settings</h1>
     <div class="container">
         <br>
+        <label>
+            [DEBUG]
+            <button onclick="reset()">reset lobby</button>
+        </label>
         <label>
             switch theme:
             <button onclick="javascript:switchStyle();">switch</button>
@@ -112,7 +132,11 @@
             <input type="number" id="amountOfPlayers" value=4 min=2 max=10 oninput="amountOfPlayersOnInput()">
             <small>2..10</small>
         </label>
-        <br>
+        <label>
+            word lists:
+            <select id="selectedWordLists" name="wordlists" multiple onclick="selectedWordListsOnInput(this)">
+            </select>
+        </label>
         <!-- <label>
             amount of phones:
             1 <input type="radio" id="oneClient" name="amountOfClients" onclick="setSinglePhone()" checked>
