@@ -14,12 +14,6 @@ const Game = require('./data/Game');
 process.users = [];
 process.gamecode = undefined;
 
-// app.get('/*/words', body_parser.json(), (req, res) => restfulRoutes.words(req, res, db));
-// app.get('/*/connect', (req, res) => restfulRoutes.connect(req, res, process.users));
-// app.get('/*/init', (req, res) => restfulRoutes.init(req, res));
-// app.post('/*/identify', body_parser.json(), (req, res) => restfulRoutes.identify(req, res, process.users));
-// app.get('/*/state', (req, res) => restfulRoutes.state(req, res));
-// app.post('/*/settings', body_parser.json(), (req, res) => restfulRoutes.settings(req, res));
 app.get('/newlist', webRoutes.newlist);
 app.get('/*', webRoutes.game);
 

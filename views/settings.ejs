@@ -72,7 +72,8 @@
         setTimeout(() => {
             getLists();
             setTimeout(() => {
-                JSON.parse(localStorage.getItem('lists')).forEach(list => document.querySelector('#selectedWordLists').innerHTML += `<option value=${list.name}>${list.name}</option>`);
+                JSON.parse(localStorage.getItem('lists'))
+                .forEach(list => document.querySelector('#selectedWordLists').innerHTML += `<option value="${list.name}">${list.name}</option>`);
             }, 200);
         }, 200);
         
@@ -82,7 +83,10 @@
         const amountOfTimeOnInput = () => updateSettings('time', document.getElementById('timePerRound').value);
         const amountOfPlayersOnInput = () => updateSettings('players', document.getElementById('amountOfPlayers').value);
         const selectedWordListsOnInput = elem => {
-            console.log(elem)
+            console.log(elem.selectedOptions);
+            for (let list in elem.selectedOptions) {
+                console.log(list);
+            }
             updateSettings('list', elem.value);
         }
 

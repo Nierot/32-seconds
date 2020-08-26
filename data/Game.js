@@ -48,16 +48,10 @@ class Game {
     }
 
     addList(list) {
-        return new Promise((res, rej) => {
-            this.settings.lists.push(list);
-            process.db.getAllWords(list)
-                .then(words => words.forEach(word => this.words.push(word)))
-                .then(res())
-                .catch(err => {
-                    console.error(err);
-                    rej(err);
-                });
-        })
+        this.settings.lists.push(list);
+        return process.lists
+                .filter(obj => { return obj.name === list })
+                .map(obj => { return obj.words })
     }
 
     getWords(amount) {
