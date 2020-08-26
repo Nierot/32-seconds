@@ -40,7 +40,7 @@ module.exports = (socket, io, log) => {
 
     // SETTINGS
 
-    updateSettings = id => socket.emit('setting changes', process.games[id]);
+    const updateSettings = id => socket.emit('setting changes', process.games[id]);
 
     socket.on('setting rounds', msg => {
         process.games[msg.id].setAmountOfRoundsPerTeam(msg.setting);
@@ -72,6 +72,12 @@ module.exports = (socket, io, log) => {
         updateSettings(msg.id);
     })
 
+    socket.on('setting list', msg => {
+        process.games[msg.id].addList(msg.setting)
+            .then(() => updateSettings(msg.id))
+            .catch(console.error);
+    })
+
     // LOBBY
 
     socket.on('new lobby', msg => {
@@ -82,13 +88,36 @@ module.exports = (socket, io, log) => {
 
     // GAME
 
+    const updateGame = id => socket.emit('game update', process.games[id]);
+
     socket.on('round finish', msg => {
         const { score } = msg;
         if (settings.verbose) verbose(`Team at socket ${id} has finished a round with score: ${score}`);
     });
 
-    
+    socket.on('score', msg => {
+        let game = process.games[msg];
+        game.isTeamOne(id) ? game.incrementScore(1, 1) : game.incrementScore(1, 2);
+        updateGame(msg);
+    });
+
+    socket.on('undo score', msg => {
+        let game = process.games[msg];
+        game.isTeamOne(id) ? game.incrementScore(-1, 1) : game.incrementScore(-1, 2);
+        updateGame(msg);
+    })
+
+    socket.on('get words', (msg, callback) => callback(process.db.getWords(msg)))
+
+    socket.on('get lists', msg => socket.emit('lists', process.lists));
+
+    socket.on('new list', list => {
+        process.lists.push(list);
+        process.db.addList(list);
+    });
+
     //TESTS
 
+    socket.on('get game', id => socket.emit('game', process.games[id]));
     socket.on('test', () => socket.emit('test'));
 }

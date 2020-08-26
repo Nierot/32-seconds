@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <%- include('partials/header') %>
+        <title>add list</title>
+        <script>
+            $(() => {
+                getLists();
+                setTimeout(() => {
+                    document.querySelector('#listname').value = `coollist#${JSON.parse(localStorage.getItem('lists')).length}`;
+                }, 200);
+
+                setInterval(parseCsv, 1000);
+            })
+
+            const parseCsv = () => updateResultList(document.querySelector('#csv').value.split(document.querySelector('#delimiter').value));
+
+            const updateResultList = table => {
+                window.currentList = { words: table, name: document.querySelector('#listname').value };
+                let list = document.querySelector('#resultTable');
+                list.innerHTML = '<tr><th>words</th></tr>';
+                table.forEach(elem => list.insertRow().innerHTML = `<td>${elem}</td>`);
+            }
+
+            const createList = () => {
+                console.log('sending list', window.currentList);
+                sendNewList();
+                location.href = '/'
+            }
+        </script>
+    </head>
+    <div class="addlist">
+        <h3>create a new list</h3>
+        <br>
+        <label>
+            list name:
+            <input id="listname" type="text">
+        </label>
+        <label>
+            delimiter: 
+            <input type="text" value="," id="delimiter">
+        </label>
+
+        <textarea id="csv" rows="10"></textarea>
+        
+        <button onclick="createList()">save</button>
+
+        <h5>resulting list:</h5>
+        <table id="resultTable"></table>
+    </div>
+</html>
