@@ -2,7 +2,6 @@ const app = require('express')();
 const http = require('http').createServer(app);
 const cors = require('cors');
 const body_parser = require('body-parser');
-const db = require('./utils/database');
 const io = require('socket.io')(http, {});
 const settings = require('./settings.json');
 const webRoutes = require('./routes/web');
@@ -21,7 +20,9 @@ process.gamecode = undefined;
 // app.post('/*/identify', body_parser.json(), (req, res) => restfulRoutes.identify(req, res, process.users));
 // app.get('/*/state', (req, res) => restfulRoutes.state(req, res));
 // app.post('/*/settings', body_parser.json(), (req, res) => restfulRoutes.settings(req, res));
+app.get('/newlist', webRoutes.newlist);
 app.get('/*', webRoutes.game);
+
 
 io.on('connection', socket => socketHandler(socket, io, Log));
 
@@ -33,6 +34,12 @@ app.set('views', settings.views_dir);
 const listener = http.listen(settings.development ? 8079 : 0, () => {
 
     process.games = {};
+    process.lists = [ { name: 'League of Legends', words: [] }, { name: 'Standard', words: [] } ];
+
+    require('./utils/database').then(db => {
+        process.db = db;
+        db.getAllListsWithWords().then(lists => process.lists = lists);
+    }).catch(err => Log.error(err));
     
     if (settings.gamehub.active) {
         parentPort.postMessage(listener.address().port);
@@ -44,5 +51,5 @@ const listener = http.listen(settings.development ? 8079 : 0, () => {
 
     settings.development ? Log.setLevel(1) : Log.setLevel(2);
 
-    console.log(`Listening on http://localhost:${listener.address().port} `);
+    Log.info(`Listening on http://localhost:${listener.address().port} `);
 });

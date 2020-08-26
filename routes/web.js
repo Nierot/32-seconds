@@ -11,5 +11,9 @@ module.exports = {
         res.sendFile('static/404.html', {
             root: '.'
         })
+    },
+
+    newlist: (req, res) => {
+        res.render('newlist');
     }
 }
