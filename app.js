@@ -5,18 +5,15 @@ const body_parser = require('body-parser');
 const io = require('socket.io')(http, {});
 const settings = require('./settings.json');
 const webRoutes = require('./routes/web');
-const restfulRoutes = require('./routes/rest');
 const { parentPort } = require('worker_threads');
 const socketHandler = require('./handlers/socket');
 const { Log } = require('nielog');
-const Game = require('./data/Game');
 
 process.users = [];
 process.gamecode = undefined;
 
 app.get('/newlist', webRoutes.newlist);
 app.get('/*', webRoutes.game);
-
 
 io.on('connection', socket => socketHandler(socket, io, Log));
 

@@ -48,10 +48,13 @@ class Game {
     }
 
     addList(list) {
-        this.settings.lists.push(list);
-        return process.lists
+        var contains = this.settings.lists.includes(list);
+        if (!contains) this.settings.lists.push(list);
+        let x = process.lists
                 .filter(obj => { return obj.name === list })
                 .map(obj => { return obj.words })
+                .forEach(list => 
+                    list.forEach(word => this.words.push(word)))
     }
 
     getWords(amount) {

@@ -75,9 +75,8 @@ module.exports = (socket, io, log) => {
     socket.on('setting list', msg => {
         console.log(msg);
         console.log(process.games[msg.id]);
-        process.games[msg.id].addList(msg.setting)
-            .then(() => updateSettings(msg.id))
-            .catch(console.error);
+        process.games[msg.id].addList(msg.setting);
+        updateSettings(msg.id);
     })
 
     // LOBBY

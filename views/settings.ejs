@@ -65,15 +65,20 @@
 
     <script>
         function pregame() {
-            document.querySelector('.settings').hidden = true;
-            document.querySelector('.pregame').hidden = false;
-            startLobby();
+            let lists = document.querySelector('#selectedWordLists');
+            if (lists.selectedOptions.length === 0) {
+                alert('select one or more word lists to begin');
+            } else {
+                addSelectedWordLists(lists);
+                document.querySelector('.settings').hidden = true;
+                document.querySelector('.pregame').hidden = false;
+            }
         }
         setTimeout(() => {
             getLists();
             setTimeout(() => {
                 JSON.parse(localStorage.getItem('lists'))
-                .forEach(list => document.querySelector('#selectedWordLists').innerHTML += `<option value="${list.name}">${list.name}</option>`);
+                    .forEach(list => document.querySelector('#selectedWordLists').innerHTML += `<option value="${list.name}">${list.name}</option>`);
             }, 200);
         }, 200);
         
@@ -82,13 +87,9 @@
         const amountOfWordsOnInput = () => updateSettings('words', document.getElementById('amountOfWords').value);
         const amountOfTimeOnInput = () => updateSettings('time', document.getElementById('timePerRound').value);
         const amountOfPlayersOnInput = () => updateSettings('players', document.getElementById('amountOfPlayers').value);
-        const selectedWordListsOnInput = elem => {
-            console.log(elem.selectedOptions);
-            for (let list in elem.selectedOptions) {
-                console.log(list);
-            }
-            updateSettings('list', elem.value);
-        }
+        const addSelectedWordLists = elem => [].slice.call(elem.selectedOptions).forEach(option => {
+            updateSettings('list', option.value);
+        })
 
         const reset = () => {
             localStorage.clear();
@@ -138,9 +139,13 @@
         </label>
         <label>
             word lists:
-            <select id="selectedWordLists" name="wordlists" multiple onclick="selectedWordListsOnInput(this)">
+            <select id="selectedWordLists" name="wordlists" multiple>
             </select>
         </label>
+        <small>
+            i am not responsible for the contents of these lists.
+            <a href="/newlist">want to make your own?</a>
+        </small>
         <!-- <label>
             amount of phones:
             1 <input type="radio" id="oneClient" name="amountOfClients" onclick="setSinglePhone()" checked>
