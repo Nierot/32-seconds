@@ -17,7 +17,12 @@ class Game {
             scores: {
                 teamOne: 0,
                 teamTwo: 0
-            }
+            },
+            turn: {
+                team: 1,
+                startedRound: false
+            },
+            started: false
         };
 
         this.words = [];
@@ -32,15 +37,15 @@ class Game {
             gameCode: gameCode,
             playerIDs: {
                 playerOne: playerOne,
-                playerTwo: undefined
+                playerTwo: playerOne
             },
             teams: {
                 teamOne: [],
                 teamTwo: []
             },
             teamNames: {
-                teamOne: '',
-                teamTwo: ''
+                teamOne: 'team 1',
+                teamTwo: 'team 2'
             },
             lists: []
         };
@@ -48,8 +53,7 @@ class Game {
     }
 
     addList(list) {
-        var contains = this.settings.lists.includes(list);
-        if (!contains) this.settings.lists.push(list);
+        if (!this.settings.lists.includes(list)) this.settings.lists.push(list);
         let x = process.lists
                 .filter(obj => { return obj.name === list })
                 .map(obj => { return obj.words })
@@ -85,6 +89,11 @@ class Game {
         if (team === 1) this.settings.teams.teamOne.push(player);
         else if (team === 2) this.settings.teams.teamTwo.push(player);
         else throw new Error('Not a valid team');
+    }
+
+    clearPlayers() {
+        this.settings.teams.teamOne = [];
+        this.settings.teams.teamTwo = [];
     }
 
     setTeamOne(id) {
@@ -154,7 +163,8 @@ class Game {
     toJson() {
         return {
             state: this.state,
-            settings: this.settings
+            settings: this.settings,
+            words: this.words
         }
     }
 
