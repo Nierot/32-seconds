@@ -2,7 +2,13 @@
 <html lang='en'>
     <head>
         <%- include('partials/header') %>
-        <title>32 seconds</title> 
+        <title>32 seconds</title>
+        <script>
+            if (getGame() !== null && getGame().state.started) {
+                document.querySelector('.settings').hidden = true;
+                document.querySelector('.game').hidden = false;
+            } 
+        </script>
     </head>
     <div class="settings">
         <%- include('settings') %>

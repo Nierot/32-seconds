@@ -4,7 +4,7 @@
         <%- include('partials/header') %>
         <title>add list</title>
         <script>
-            $(() => {
+            window.addEventListener('load', () => {
                 getLists();
                 setTimeout(() => {
                     document.querySelector('#listname').value = `coollist#${JSON.parse(localStorage.getItem('lists')).length}`;

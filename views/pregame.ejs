@@ -3,16 +3,16 @@
     <div class="join">
         <!-- <div class="gamecode"></div> -->
         <!-- <br> -->
+        <h3>fill in the teams to begin</h3>
         <label>
             teamname 1: 
             <input type="text" id="teamname1">
         </label>
-        <br>
         <label>
             teamname 2:
             <input type="text" id="teamname2">
         </label>
-        <button onclick="submitTeamname()">submit</button>
+        <button onclick="submitTeamname()">submit teamname</button>
         <table>
             <thead>
                 <tr>
@@ -25,49 +25,10 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
             </tbody>
         </table>
-        <!-- This teams names -->
-    
-        <!-- Current players -->
         <br>
-        <!-- <button onclick="javascript:settings()">settings</button> -->
+        <button onclick="savePlayersAndStart()">submit players and start game</button>
     </div>
 
     <script>        
@@ -88,6 +49,40 @@
                 updateSettings('teamname2', teamname2.value);
                 document.querySelector('#nameTeam2').innerText = teamname2.value;
             }
+        }
+
+        const startGame = () => {
+            sendStartGameSignal();
+            document.querySelector('.pregame').hidden = true;
+            document.querySelector('.game').hidden = false;
+        }
+
+        const savePlayersAndStart = () => {
+            [...Array(parseInt(getGame().settings.amountOfPlayersPerTeam)).keys()].some(row => {
+                let team1 = document.getElementById(`team1player#${row}`);
+                let team2 = document.getElementById(`team2player#${row}`);
+                if (team1.value === '' || team2.value === '') {
+                    alert('please fill in all playernames');
+                    updateSettings('team clear', '');
+                    return true;
+                }
+                updateSettings('team 1', team1.value);
+                updateSettings('team 2', team2.value);
+            })
+            startGame();
+        }
+
+        const generatePlayerlist = amount => {
+            let html = '';
+            [...Array(amount).keys()].forEach(key => {
+                html += `
+                <tr>
+                    <td><input type="text" id="team1player#${key}"></td>
+                    <td><input type="text" id="team2player#${key}"></td>
+                </tr>
+                `
+            })
+            document.querySelector('#players').innerHTML = html;
         }
 
         // let gamecodeDiv = document.querySelector('.gamecode');

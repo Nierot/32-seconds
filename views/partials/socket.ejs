@@ -68,6 +68,8 @@
         return JSON.parse(localStorage.getItem('game'));
     }
 
+    const sendStartGameSignal = () => socket.emit('start game', getID());
+
     socket.on('setting changes', game => {
         setGame(game);
         console.log(game);
@@ -100,6 +102,8 @@
         }
         return res;
     }
+
+    const startTurn = team => socket.emit('start turn', team);
 
     const getWord = () => {
         let words = getGame().words;

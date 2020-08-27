@@ -29,32 +29,82 @@
                 </a>
                 `
         }
+
+        const betweenRoundsHTML = team => {
+            return `
+            <br>
+            <h3>
+                it is ${team}'s turn!
+            </h3>
+            <br>
+            <button onclick="startRound()">start</button>
+            `
+        }
+
+        const scoreBoardHTML = () => {
+            return `
+            <br>
+            <h3>current standings:</h3>
+            <br>
+            <h4 id="scoreTeam1">${getGame().state.scores.teamOne}</h4>
+            <h4 id="scoreTeam2">${getGame().state.scores.teamTwo}</h4>
+            <br>
+            `
+        }
+
+        const startRound = () => {
+            document.querySelector('.betweenRounds').hidden = true;
+            document.querySelector('.duringRounds').hidden = false;
+            startTurn(1);
+            startCounter();
+        }
+        
+        const endRoute = () => {
+
+        }
+
+        const startCounter = () => {
+            let timePerRound = parseInt(getGame().settings.timePerRound);
+            let endTime = new Date().getTime() + timePerRound*1000;
+            let interval = setInterval(() => {
+                if (endTime >= new Date().getTime()) {
+                    clearInterval(interval);
+                    endRound();
+                } else {
+                    timePerRound--;
+                    document.querySelector('#timeLeft').innerHTML = timePerRound;
+                }
+            }, 1000);
+        }
     </script>
-    <div class="timer">
-        <h1>
+    <div class="betweenRounds"></div>
+    <div class="duringRounds">
+        <div class="timer">
+            <h1>
+                <center>
+                    <span id="timeLeft">32</span>
+                     seconds left
+                </center>
+            </h1>
+        </div>
+        <div class="words">
             <center>
-                <span id="timeLeft">32</span>
-                 seconds left
+                <a class="word" onclick="wordCorrect(this);">
+                    <h2>Word</h2>
+                </a>
+                <a class="word" onclick="wordCorrect(this);">
+                    <h2>Word</h2>
+                </a>
+                <a class="word" onclick="wordCorrect(this);">
+                    <h2>Word</h2>
+                </a>
+                <a class="word" onclick="wordCorrect(this);">
+                    <h2>Word</h2>
+                </a>
+                <a class="word" onclick="wordCorrect(this);">
+                    <h2>Word</h2>
+                </a>
             </center>
-        </h1>
-    </div>
-    <div class="words">
-        <center>
-            <a class="word" onclick="wordCorrect(this);">
-                <h2>Word</h2>
-            </a>
-            <a class="word" onclick="wordCorrect(this);">
-                <h2>Word</h2>
-            </a>
-            <a class="word" onclick="wordCorrect(this);">
-                <h2>Word</h2>
-            </a>
-            <a class="word" onclick="wordCorrect(this);">
-                <h2>Word</h2>
-            </a>
-            <a class="word" onclick="wordCorrect(this);">
-                <h2>Word</h2>
-            </a>
-        </center>
+        </div>
     </div>
 </div>

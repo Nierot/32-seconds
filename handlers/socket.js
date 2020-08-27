@@ -12,8 +12,6 @@ module.exports = (socket, io, log) => {
     socket.emit('id'); //request identification
 
     socket.on('id', msg => {
-        console.log(msg);
-        console.log(process.users)
         if (process.users[msg]) {
             socket.emit('id ok', process.games[msg]);
         } else {
@@ -30,7 +28,6 @@ module.exports = (socket, io, log) => {
     socket.on('no id', msg => {
         socket.emit('new id', id);
         process.users[id] = new User(id, socket);
-        console.log(process.users);
     });
 
     socket.on('disconnect', msg => {
@@ -73,9 +70,22 @@ module.exports = (socket, io, log) => {
     })
 
     socket.on('setting list', msg => {
-        console.log(msg);
-        console.log(process.games[msg.id]);
         process.games[msg.id].addList(msg.setting);
+        updateSettings(msg.id);
+    })
+
+    socket.on('setting team 1', msg => {
+        process.games[msg.id].addPlayer(msg.setting, 1);
+        updateSettings(msg.id);
+    })
+
+    socket.on('setting team 2', msg => {
+        process.games[msg.id].addPlayer(msg.setting, 2);
+        updateSettings(msg.id);
+    })
+
+    socket.on('setting team clear', msg => {
+        process.games[msg.id].clearPlayers();
         updateSettings(msg.id);
     })
 
@@ -88,6 +98,11 @@ module.exports = (socket, io, log) => {
     })
 
     // GAME
+
+    socket.on('start game', id => {
+        process.games[id].state.started = true;
+        updateGame(id);
+    })
 
     const updateGame = id => socket.emit('game update', process.games[id]);
 

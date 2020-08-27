@@ -70,6 +70,7 @@
                 alert('select one or more word lists to begin');
             } else {
                 addSelectedWordLists(lists);
+                generatePlayerlist(parseInt(getGame().settings.amountOfPlayersPerTeam));
                 document.querySelector('.settings').hidden = true;
                 document.querySelector('.pregame').hidden = false;
             }
@@ -133,7 +134,7 @@
             <small>10..60</small>
         </label>
         <label>
-            amount of players per team:
+            players per team:
             <input type="number" id="amountOfPlayers" value=4 min=2 max=10 oninput="amountOfPlayersOnInput()">
             <small>2..10</small>
         </label>
