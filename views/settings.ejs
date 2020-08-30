@@ -79,9 +79,9 @@
             getLists();
             setTimeout(() => {
                 JSON.parse(localStorage.getItem('lists'))
-                    .forEach(list => document.querySelector('#selectedWordLists').innerHTML += `<option value="${list.name}">${list.name}</option>`);
-            }, 200);
-        }, 200);
+                    .forEach(list => document.querySelector('#selectedWordLists').innerHTML += `<option value="${list.name}">${list.name} (${list.words.length})</option>`);
+            }, 500);
+        }, 500);
         
 
         const amountOfRoundsOnInput = () => updateSettings('rounds', document.getElementById('amountOfRounds').value);
@@ -140,8 +140,7 @@
         </label>
         <label>
             word lists:
-            <select id="selectedWordLists" name="wordlists" multiple>
-            </select>
+            <select id="selectedWordLists" name="wordlists" multiple></select>
         </label>
         <small>
             i am not responsible for the contents of these lists.

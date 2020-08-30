@@ -14,12 +14,28 @@
             if (attr === null || attr === false || attr === 'false') {
                 elem.setAttribute('data-crossed', true);
                 elem.setAttribute('style', 'text-decoration: line-through');
-                scorePoint();
+                scorePoint(elem.innerText);
             } else {
                 elem.setAttribute('data-crossed', false);
                 elem.setAttribute('style', '');
-                retractPoint();
+                retractPoint(elem.innerText);
             }
+        }
+
+        const areAllWordsGuessed = () => {
+            return [...document.querySelectorAll('.word')].filter(word => {
+                let attr = word.getAttribute('data-crossed')
+                return attr === null || attr === false || attr === 'false';
+            }).length === 0;
+        }
+
+        const clearAllNonGuessedWords = () => {
+            [...document.querySelectorAll('.word')].filter(word => {
+                let attr = word.getAttribute('data-crossed')
+                if (attr === null || attr === false || attr === 'false') {
+                    removeWord(word.innerText);
+                }
+            })
         }
 
         const getWordElement = word => {
@@ -30,81 +46,110 @@
                 `
         }
 
-        const betweenRoundsHTML = team => {
+        const betweenRoundsHTML = (team, player) => {
             return `
-            <br>
-            <h3>
-                it is ${team}'s turn!
-            </h3>
-            <br>
-            <button onclick="startRound()">start</button>
+                <br>
+                <h3>it is ${team}'s turn!</h3>
+                <h2>player: ${player} </h2> 
+                <br>
+                ${scoreBoardHTML()}
+                <button onclick="startRound()">start round</button>
             `
         }
 
         const scoreBoardHTML = () => {
+            let game = getGame();
             return `
-            <br>
-            <h3>current standings:</h3>
-            <br>
-            <h4 id="scoreTeam1">${getGame().state.scores.teamOne}</h4>
-            <h4 id="scoreTeam2">${getGame().state.scores.teamTwo}</h4>
-            <br>
+                <h3>current standings:</h3>
+                <h4 id="scoreTeam1">${game.settings.teamNames.teamOne}: ${game.state.scores.teamOne}</h4>
+                <h4 id="scoreTeam2">${game.settings.teamNames.teamTwo}: ${game.state.scores.teamTwo}</h4>
+                <br>
             `
         }
 
-        const startRound = () => {
+        const generateWordList = () => {
+            let res = '';
+            getWords(parseInt(getGame().settings.amountOfWords)).forEach(word => 
+                res += `
+                    <a class="word" onclick="wordCorrect(this);">
+                        <h2>${word}</h2>
+                    </a>
+                `
+            );
+            return `
+                <center>
+                    ${res}
+                </center>
+            `
+        }
+
+        const cleanBetweenRounds = () => document.querySelector('.betweenRounds').innerHTML = '';
+
+        const startRound = team => {
+            document.querySelector('.words').innerHTML = generateWordList();
             document.querySelector('.betweenRounds').hidden = true;
             document.querySelector('.duringRounds').hidden = false;
-            startTurn(1);
+            startTurn(team);
             startCounter();
         }
-        
-        const endRoute = () => {
 
+        const handleStartRoundResponse = game => {
+            setGame(game);
+
+
+        }
+        
+        const endRound = () => sendEndTurn();
+
+        const handleEndRoundResponse = game => {
+            setGame(game);
+
+            let between = document.querySelector('.betweenRounds')
+            document.querySelector('.duringRounds').hidden = true;
+            between.hidden = false;
+            setBetweenRoundsHTML();
+
+            // let game = getGame();
+        }
+
+        const setBetweenRoundsHTML = () => {
+            let game = getGame();
+            if (game.state.turn.team === 1) {
+                document.querySelector('.betweenRounds').innerHTML = betweenRoundsHTML(game.settings.teamNames.teamOne, game.state.turn.player);
+            } else {
+                document.querySelector('.betweenRounds').innerHTML = betweenRoundsHTML(game.settings.teamNames.teamTwo, game.state.turn.player);
+            }
         }
 
         const startCounter = () => {
-            let timePerRound = parseInt(getGame().settings.timePerRound);
-            let endTime = new Date().getTime() + timePerRound*1000;
+            const timePerRound = parseInt(getGame().settings.timePerRound);
+            let timer = timePerRound;
+            let intervalIterator = -1;
             let interval = setInterval(() => {
-                if (endTime >= new Date().getTime()) {
+                intervalIterator++;
+                if (intervalIterator === timePerRound || areAllWordsGuessed()) {
                     clearInterval(interval);
+                    clearAllNonGuessedWords();
                     endRound();
                 } else {
-                    timePerRound--;
-                    document.querySelector('#timeLeft').innerHTML = timePerRound;
+                    timer--;
+                    document.querySelector('#timeLeft').innerHTML = timer;
                 }
             }, 1000);
         }
     </script>
     <div class="betweenRounds"></div>
-    <div class="duringRounds">
+    <div class="duringRounds" hidden>
         <div class="timer">
             <h1>
                 <center>
-                    <span id="timeLeft">32</span>
+                    <span id="timeLeft"></span>
                      seconds left
                 </center>
             </h1>
         </div>
+        <br>
         <div class="words">
-            <center>
-                <a class="word" onclick="wordCorrect(this);">
-                    <h2>Word</h2>
-                </a>
-                <a class="word" onclick="wordCorrect(this);">
-                    <h2>Word</h2>
-                </a>
-                <a class="word" onclick="wordCorrect(this);">
-                    <h2>Word</h2>
-                </a>
-                <a class="word" onclick="wordCorrect(this);">
-                    <h2>Word</h2>
-                </a>
-                <a class="word" onclick="wordCorrect(this);">
-                    <h2>Word</h2>
-                </a>
-            </center>
         </div>
     </div>
 </div>

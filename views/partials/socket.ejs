@@ -70,6 +70,10 @@
 
     const sendStartGameSignal = () => socket.emit('start game', getID());
 
+    const sendEndTurn = team => socket.emit('end turn', { id: getID(), team: team });
+    
+    socket.on('end turn', game => handleEndRoundResponse(game));
+
     socket.on('setting changes', game => {
         setGame(game);
         console.log(game);
@@ -90,9 +94,11 @@
     
     // Game
 
-    const scorePoint = () => socket.emit('score', getID());
+    const scorePoint = word => socket.emit('score', { id: getID(), word: word });
 
-    const retractPoint = () => socket.emit('undo score', getID());
+    const retractPoint = word => socket.emit('undo score', { id: getID(), word: word });
+
+    const removeWord = word => socket.emit('remove word', { id: getID(), word: word })
 
     const getWords = (no) => {
         let amount = no || 5;
@@ -103,7 +109,9 @@
         return res;
     }
 
-    const startTurn = team => socket.emit('start turn', team);
+    const startTurn = team => socket.emit('start turn', { id: getID(), team: team });
+
+    const endTurn = team => socket.emit('end turn', { id: getID(), team: team });
 
     const getWord = () => {
         let words = getGame().words;

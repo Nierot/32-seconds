@@ -53,6 +53,7 @@
 
         const startGame = () => {
             sendStartGameSignal();
+            setBetweenRoundsHTML();
             document.querySelector('.pregame').hidden = true;
             document.querySelector('.game').hidden = false;
         }
@@ -69,7 +70,7 @@
                 updateSettings('team 1', team1.value);
                 updateSettings('team 2', team2.value);
             })
-            startGame();
+            startGame(1);
         }
 
         const generatePlayerlist = amount => {

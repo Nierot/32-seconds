@@ -101,7 +101,17 @@ module.exports = (socket, io, log) => {
 
     socket.on('start game', id => {
         process.games[id].state.started = true;
+        process.games[id].state.turn.player = process.games[id].settings.teams.teamOne[0];
+        console.dir(process.games[id]);
         updateGame(id);
+    })
+
+    socket.on('end turn', msg => {
+        let game = process.games[msg.id];
+        game.switchTurn();
+        game.startedRound = false;
+        socket.emit('end turn', game);
+        updateGame(msg.id);
     })
 
     const updateGame = id => socket.emit('game update', process.games[id]);
@@ -112,16 +122,24 @@ module.exports = (socket, io, log) => {
     });
 
     socket.on('score', msg => {
-        let game = process.games[msg];
-        game.isTeamOne(id) ? game.incrementScore(1, 1) : game.incrementScore(1, 2);
-        updateGame(msg);
+        let game = process.games[msg.id];
+        game.wordGuessed(msg.word);
+        game.state.turn.team === 1 ? game.incrementScore(1, 1) : game.incrementScore(1, 2);
+        updateGame(msg.id);
     });
 
     socket.on('undo score', msg => {
-        let game = process.games[msg];
-        game.isTeamOne(id) ? game.incrementScore(-1, 1) : game.incrementScore(-1, 2);
-        updateGame(msg);
-    })
+        let game = process.games[msg.id];
+        game.wordUnguessed(msg.word);
+        game.state.turn.team === 1 ? game.incrementScore(-1, 1) : game.incrementScore(-1, 2);
+        updateGame(msg.id);
+    });
+
+    socket.on('remove word', msg => {
+        console.log(msg);
+        process.games[msg.id].wordGuessed(msg.word);
+        updateGame(msg.id);
+    });
 
     socket.on('get words', (msg, callback) => callback(process.db.getWords(msg)))
 

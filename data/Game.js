@@ -20,7 +20,12 @@ class Game {
             },
             turn: {
                 team: 1,
-                startedRound: false
+                startedRound: false,
+                player: undefined
+            },
+            lastTurn: {
+                player: undefined,
+                team: undefined
             },
             started: false
         };
@@ -72,6 +77,29 @@ class Game {
         return result;
     }
 
+    switchTurn() {
+        this.state.roundsPlayed++;
+
+        this.state.lastTurn.team = this.state.turn.team;
+        this.state.lastTurn.player = this.state.player;
+
+        this.state.turn.team = this.state.turn.team === 1 ? 2 : 1;
+        
+        if (this.state.lastTurn.team === 1) {
+            let index = this.settings.teams.teamOne.indexOf(this.state.lastTurn.player);
+            if (index === this.settings.teams.teamOne.length - 1) {
+                index = 0;
+            }
+            this.state.turn.player = this.settings.teams.teamOne[index];
+        } else {
+            let index = this.settings.teams.teamTwo.indexOf(this.state.lastTurn.player);
+            if (index === this.settings.teams.teamTwo.length - 1) {
+                index = 0;
+            }
+            this.state.turn.player = this.settings.teams.teamTwo[index];
+        }
+    }
+
     _getWord() {
         let int = random.randomInteger(0, this.words.length);
         let word = this.words[int];
@@ -83,6 +111,14 @@ class Game {
         if (team === 1) this.state.scores.teamOne += scored;
         else if (team === 2) this.state.scores.teamTwo += scored;
         else throw new Error('Not a valid team');
+    }
+
+    wordGuessed(toRemove) {
+        this.words = this.words.filter(word => { return word != toRemove });
+    }
+
+    wordUnguessed(word) {
+        this.words.push(word);
     }
 
     addPlayer(player, team) {
