@@ -51,12 +51,7 @@
             }
         }
 
-        const startGame = () => {
-            sendStartGameSignal();
-            setBetweenRoundsHTML();
-            document.querySelector('.pregame').hidden = true;
-            document.querySelector('.game').hidden = false;
-        }
+        const startGame = () => sendStartGameSignal();
 
         const savePlayersAndStart = () => {
             [...Array(parseInt(getGame().settings.amountOfPlayersPerTeam)).keys()].some(row => {

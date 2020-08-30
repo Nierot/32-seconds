@@ -93,10 +93,12 @@
             startCounter();
         }
 
-        const handleStartRoundResponse = game => {
+        const handleStartGameResponse = game => {
+            console.log('oof')
             setGame(game);
-
-
+            setBetweenRoundsHTML();
+            document.querySelector('.pregame').hidden = true;
+            document.querySelector('.game').hidden = false;
         }
         
         const endRound = () => sendEndTurn();
@@ -104,12 +106,13 @@
         const handleEndRoundResponse = game => {
             setGame(game);
 
+            console.log(game);
+
             let between = document.querySelector('.betweenRounds')
             document.querySelector('.duringRounds').hidden = true;
             between.hidden = false;
             setBetweenRoundsHTML();
 
-            // let game = getGame();
         }
 
         const setBetweenRoundsHTML = () => {

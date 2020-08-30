@@ -102,7 +102,7 @@ module.exports = (socket, io, log) => {
     socket.on('start game', id => {
         process.games[id].state.started = true;
         process.games[id].state.turn.player = process.games[id].settings.teams.teamOne[0];
-        console.dir(process.games[id]);
+        socket.emit('start game', process.games[id]);
         updateGame(id);
     })
 

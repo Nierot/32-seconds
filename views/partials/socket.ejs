@@ -79,6 +79,8 @@
         console.log(game);
     });
 
+    socket.on('start game', game => handleStartGameResponse(game));
+
     socket.on('lobby', msg => setGame(msg));
 
     const addList = list => socket.emit('setting list', { id: getID(), setting: list });

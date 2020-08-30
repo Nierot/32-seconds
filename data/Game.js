@@ -24,8 +24,9 @@ class Game {
                 player: undefined
             },
             lastTurn: {
-                player: undefined,
-                team: undefined
+                playerTeamOne: undefined,
+                playerTeamTwo: undefined,
+                team: undefined,
             },
             started: false
         };
@@ -81,21 +82,24 @@ class Game {
         this.state.roundsPlayed++;
 
         this.state.lastTurn.team = this.state.turn.team;
-        this.state.lastTurn.player = this.state.player;
 
         this.state.turn.team = this.state.turn.team === 1 ? 2 : 1;
         
-        if (this.state.lastTurn.team === 1) {
-            let index = this.settings.teams.teamOne.indexOf(this.state.lastTurn.player);
-            if (index === this.settings.teams.teamOne.length - 1) {
-                index = 0;
-            }
+        if (this.state.lastTurn.team === 2) {
+            this.state.lastTurn.playerTeamTwo = this.state.turn.player;
+
+            let index = this.settings.teams.teamOne.indexOf(this.state.lastTurn.playerTeamOne) + 1;
+            if (index === this.settings.teams.teamOne.length || index == -1) index = 0;
+            if (this.state.lastTurn.playerTeamOne === undefined) index = 0;
+
             this.state.turn.player = this.settings.teams.teamOne[index];
         } else {
-            let index = this.settings.teams.teamTwo.indexOf(this.state.lastTurn.player);
-            if (index === this.settings.teams.teamTwo.length - 1) {
-                index = 0;
-            }
+            this.state.lastTurn.playerTeamOne = this.state.turn.player;
+
+            let index = this.settings.teams.teamTwo.indexOf(this.state.lastTurn.playerTeamTwo) + 1;
+            if (index === this.settings.teams.teamTwo.length || index === -1) index = 0;
+            if (this.state.lastTurn.playerTeamTwo === undefined) index = 0;
+
             this.state.turn.player = this.settings.teams.teamTwo[index];
         }
     }
