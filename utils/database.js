@@ -2,6 +2,7 @@ const sqlite3 = require('sqlite3');
 const sqlite = require('sqlite');
 const random = require('./random');
 const { info, error, verbose } = require('nielog').Log;
+const settings = require('../settings.json');
 
 class DatabaseHelper {
     #db = undefined;
@@ -11,7 +12,7 @@ class DatabaseHelper {
 
     async init() {
         this.#db = await sqlite.open({
-            filename: 'data.db',
+            filename: settings.db_location,
             driver: sqlite3.Database
         })
         await this.#db.exec('CREATE TABLE IF NOT EXISTS words(word, list)');
