@@ -7,18 +7,24 @@
             if (getGame() !== null && getGame().state.started) {
                 document.querySelector('.settings').hidden = true;
                 document.querySelector('.game').hidden = false;
-            } 
+            }
+            
+            window.onbeforeunload = function () {return false;} // refresh is slecht voor mn app
         </script>
     </head>
-    <div class="settings">
-        <%- include('settings') %>
-    </div>
-
-    <div class="pregame" hidden>
-        <%- include('pregame') %>
-    </div>
-    
-    <div class="game" hidden>
-        <%- include('game') %>
-    </div>
+    <body>
+        <div class="wrapper">
+            <div class="settings">
+                <%- include('settings') %>
+            </div>
+        
+            <div class="pregame" hidden>
+                <%- include('pregame') %>
+            </div>
+            
+            <div class="game" hidden>
+                <%- include('game') %>
+            </div>
+        </div>
+    </body>
 </html>

@@ -162,6 +162,7 @@
 
     const backToHome = () => {
         document.querySelector('.endScreen').hidden = true;
+        window.onbeforeunload = undefined;
         reset();
     }
 

@@ -24,7 +24,7 @@ app.set('view engine', 'ejs');
 app.use(body_parser);
 app.set('views', settings.views_dir);
 
-const listener = http.listen(settings.development ? 8079 : 0, () => {
+const listener = http.listen(settings.development ? settings.port : 0, () => {
 
     process.games = {};
     process.lists = [ { name: 'League of Legends', words: [] }, { name: 'Standard', words: [] } ];
