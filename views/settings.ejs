@@ -91,11 +91,7 @@
         const addSelectedWordLists = elem => [].slice.call(elem.selectedOptions).forEach(option => {
             updateSettings('list', option.value);
         })
-
-        const reset = () => {
-            localStorage.clear();
-            location.reload(true);
-        }
+        
         // const setSinglePhone = () => updateSettings('phones', false);
         // const setDualPhone = () => updateSettings('phones', true);
         // const setSpectators = () => updateSettings('spectators', document.getElementById('spectatorCheck').checked);

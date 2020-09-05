@@ -94,7 +94,7 @@
         }
 
         const handleStartGameResponse = game => {
-            console.log('oof')
+            // console.log('oof')
             setGame(game);
             setBetweenRoundsHTML();
             document.querySelector('.pregame').hidden = true;
@@ -106,7 +106,7 @@
         const handleEndRoundResponse = game => {
             setGame(game);
 
-            console.log(game);
+            // console.log(game);
 
             let between = document.querySelector('.betweenRounds')
             document.querySelector('.duringRounds').hidden = true;
@@ -153,6 +153,25 @@
         </div>
         <br>
         <div class="words">
+        </div>
+    </div>
+    <div class="endScreen" hidden>
+        <div id="endScreenWinner" hidden>
+            <h1><center>
+                <br>
+                <span id="winner"></span> has won with <span id="winnerPoints"></span> points!
+                <br>
+                <br>
+            </center></h1>
+        </div>
+        <div id="endScreenTie" hidden>
+            <center>
+                <img src="https://cdn.nierot.com/memes/tie.jpg" alt="it's a tie">
+            </center>
+        </div>
+
+        <div id="backToHome">
+            <center><button onclick="backToHome()">back to lobby</button></center>
         </div>
     </div>
 </div>

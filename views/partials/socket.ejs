@@ -76,7 +76,7 @@
 
     socket.on('setting changes', game => {
         setGame(game);
-        console.log(game);
+        // console.log(game);
     });
 
     socket.on('start game', game => handleStartGameResponse(game));
@@ -90,7 +90,7 @@
     const sendNewList = () => socket.emit('new list', window.currentList);
 
     socket.on('lists', lists => {
-        console.log(lists);
+        // console.log(lists);
         localStorage.setItem('lists', JSON.stringify(lists));
     })
     
@@ -130,8 +130,45 @@
 
     socket.on('game update', msg => {
         setGame(msg)
-        console.log(msg);
+        // console.log(msg);
     });
+
+    socket.on('game end', msg => {
+        document.querySelector('.duringRounds').hidden = true;
+        document.querySelector('.betweenRounds').hidden = true;
+
+        let one = msg.state.scores.teamOne;
+        let two = msg.state.scores.teamTwo;
+        let winnerDoc = document.querySelector('#endScreenWinner');
+        let winner = document.querySelector('#winner');
+        let points = document.querySelector('#winnerPoints');
+        let tie = document.querySelector('#endScreenTie');
+
+        if (one > two) {
+            winner.innerText = msg.settings.teamNames.teamOne;
+            winnerPoints.innerText = msg.state.scores.teamOne;
+            winnerDoc.hidden = false;
+        } else if (two > one) {
+            winner.innerText = msg.settings.teamNames.teamTwo;
+            winnerPoints.innerText = msg.state.scores.teamTwo;
+            winnerDoc.hidden = false;
+        } else {
+            tie.hidden = false;
+        }
+        
+        document.querySelector('.endScreen').hidden = false;
+        socket.emit('game end');
+    })
+
+    const backToHome = () => {
+        document.querySelector('.endScreen').hidden = true;
+        reset();
+    }
+
+    const reset = () => {
+        localStorage.clear();
+        location.reload(true);
+    }
 
 
 </script>

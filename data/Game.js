@@ -78,6 +78,10 @@ class Game {
         return result;
     }
 
+    hasEnded() {
+        return parseInt(this.settings.amountOfRoundsPerTeam) * 2 === this.state.roundsPlayed;
+    }
+
     switchTurn() {
         this.state.roundsPlayed++;
 

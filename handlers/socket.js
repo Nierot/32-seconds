@@ -109,17 +109,19 @@ module.exports = (socket, io, log) => {
     socket.on('end turn', msg => {
         let game = process.games[msg.id];
         game.switchTurn();
+        if (game.hasEnded()) socket.emit('finished'); //TODO
         game.startedRound = false;
         socket.emit('end turn', game);
         updateGame(msg.id);
     })
 
-    const updateGame = id => socket.emit('game update', process.games[id]);
+    const updateGame = id => {
+        let game = process.games[id];
+        if (game.hasEnded()) socket.emit('game end', game);
+        else socket.emit('game update', game);
+    }
 
-    socket.on('round finish', msg => {
-        const { score } = msg;
-        if (settings.verbose) verbose(`Team at socket ${id} has finished a round with score: ${score}`);
-    });
+    socket.on('game end', id => delete process.games[id]);
 
     socket.on('score', msg => {
         let game = process.games[msg.id];
@@ -149,6 +151,7 @@ module.exports = (socket, io, log) => {
         process.lists.push(list);
         process.db.addList(list);
     });
+
 
     //TESTS
 
