@@ -12,6 +12,8 @@ const { Log } = require('nielog');
 process.users = [];
 process.gamecode = undefined;
 
+//TODO add some handling for when there are no words left. Currently just either spams the last word or prints undefined.
+
 app.get('/newlist', webRoutes.newlist);
 app.get('/*', webRoutes.game);
 

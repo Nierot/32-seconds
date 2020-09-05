@@ -1,10 +1,17 @@
 <div class="gameDynamic">
     <style>
-        .word {
+        .word-dark {
             color: #ffffff !important;
         }
-        .word:hover {
+        .word-dark:hover {
             color: #afafaf !important;
+        }
+
+        .word-light {
+            color: #202020 !important;
+        }
+        .word-light:hover {
+            color: #505050 !important;
         }
     </style>
 
@@ -38,14 +45,6 @@
             })
         }
 
-        const getWordElement = word => {
-            return `
-                <a class="word" onclick="wordCorrect(this);">
-                    <h2>${word}</h2>
-                </a>
-                `
-        }
-
         const betweenRoundsHTML = (team, player) => {
             return `
                 <br>
@@ -71,7 +70,7 @@
             let res = '';
             getWords(parseInt(getGame().settings.amountOfWords)).forEach(word => 
                 res += `
-                    <a class="word" onclick="wordCorrect(this);">
+                    <a class="word word-${localStorage.getItem('style')}" onclick="wordCorrect(this);">
                         <h2>${word}</h2>
                     </a>
                 `

@@ -3,24 +3,26 @@
 <meta http-equiv="Cache-control" content="no-cache">
 <meta http-equiv="Expires" content="-1">
 <script>
+    localStorage.setItem('style', 'dark');
     const styles = [
-        'https://cdn.nierot.com/-/sakura-dark.css',
-        'https://cdn.nierot.com/-/sakura.css',
-        'https://cdn.nierot.com/-/sakura-earthly.css',
-        'https://cdn.nierot.com/-/sakura-vader.css',
-        'https://cdn.nierot.com/-/sakura-dark-solarized.css',
-        'https://cdn.nierot.com/-/sakura-ink.css'
+        { url: 'https://cdn.nierot.com/-/sakura-dark.css', type: 'dark' },
+        { url: 'https://cdn.nierot.com/-/sakura.css', type: 'light' },
+        { url: 'https://cdn.nierot.com/-/sakura-earthly.css', type: 'light' },
+        { url: 'https://cdn.nierot.com/-/sakura-vader.css', type: 'dark' },
+        { url: 'https://cdn.nierot.com/-/sakura-dark-solarized.css', type: 'dark' },
+        { url: 'https://cdn.nierot.com/-/sakura-ink.css', type: 'light' }
     ]
 
     function switchStyle() {
         let style = document.getElementById('style');
-        let current = styles.findIndex(stylesheet => { return stylesheet === style.href });
+        let current = styles.findIndex(stylesheet => { return stylesheet.url === style.href });
         if (current === styles.length - 1) {
-            style.href = styles[0];
+            style.href = styles[0].url;
+            localStorage.setItem('style', styles[0].type);
         } else {
-            style.href = styles[current + 1];
+            style.href = styles[current + 1].url;
+            localStorage.setItem('style', styles[current + 1].type);
         }
-
     }
 
 </script>
